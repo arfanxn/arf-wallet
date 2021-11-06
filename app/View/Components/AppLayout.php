@@ -11,11 +11,13 @@ class AppLayout extends Component
      *
      * @return void
      */
-    public $title;
+    public $title, $navbarTop, $navbarBottom;
 
-    public function __construct($title = "Title")
+    public function __construct($title = "Title", $navbarTop = true, $navbarBottom = true)
     {
         $this->title = $title;
+        $this->navbarTop = $navbarTop;
+        $this->navbarBottom = $navbarBottom;
     }
 
     /**

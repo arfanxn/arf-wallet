@@ -19,14 +19,23 @@
 <body>
 
     <main class="row">
-        <div class="offset-md-4 col-md-4 col-12">
+        <div class="offset-md-4 col-md-4 col-12" style="z-index: 5555">
+            @if ($navbarTop == true)
+                <x-navbar-top></x-navbar-top>
+            @endif
+
             {{ $slot }}
+
+            @if ($navbarBottom == true)
+                <x-navbar-bottom></x-navbar-bottom>
+            @endif
         </div>
     </main>
 
     {{-- pooperJs and jQuery --}}
     <script src="{{ asset('js/app.js') }}"></script>
-    {{-- pooperJs and jQuery --}}
+    <script src="{{ asset('js/helper.js') }}"></script>
+
     {!! $scripts ?? '' !!}
 </body>
 
