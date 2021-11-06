@@ -18,8 +18,10 @@
 
 <body>
 
-    <main class="container-md">
-        {{ $slot }}
+    <main class="row">
+        <div class="offset-md-4 col-md-4 col-12">
+            {{ $slot }}
+        </div>
     </main>
 
     {{-- pooperJs and jQuery --}}
