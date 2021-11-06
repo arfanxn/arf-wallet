@@ -16,10 +16,11 @@
 
 </head>
 
-<body>
+<body class="bg-dark overflow-hidden">
 
-    <main class="row">
-        <div class="offset-md-4 col-md-4 col-12" style="z-index: 5555">
+    <main class="row m-auto">
+        <div class="offset-md-4 col-md-4 col-12 p-0 bg-light overflow-auto scrollbar-none"
+            style="z-index: 5555; height : 1000px;">
             @if ($navbarTop == true)
                 <x-navbar-top></x-navbar-top>
             @endif

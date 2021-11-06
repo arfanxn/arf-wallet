@@ -1,4 +1,4 @@
-<nav class="bg-primary fixed-top  offset-4 col-12 col-md-4 p-1">
+<nav class="bg-primary fixed-top  offset-md-4 col-12 col-md-4 p-1">
     <x-icon.wallet></x-icon.wallet>
     <div class="d-inline pe-2">
         <small class="align-top d-inline">Rp</small>

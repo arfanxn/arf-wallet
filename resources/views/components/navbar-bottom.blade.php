@@ -1,4 +1,4 @@
-<nav class="fixed-bottom bg-light offset-4 col-12 col-md-4 border-top border-dark pt-1  ">
+<nav class="fixed-bottom bg-light offset-md-4 col-12 col-md-4 border-top border-dark pt-1  ">
     <div class="row text-center">
         <div class="col-4">
             <x-icon.history></x-icon.history>
