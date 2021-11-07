@@ -12,4 +12,4 @@
         <x-icon.inbox></x-icon.inbox>
     </a>
 </nav>
-<div class="p-2 w-100"></div>
+<div class="p-3 w-100"></div>

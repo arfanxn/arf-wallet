@@ -7,10 +7,6 @@
 <div class="modal fade" id="modalWalletInfo" tabindex="-1" aria-labelledby="modalWalletInfoLabel" aria-hidden="true">
     <div class="modal-dialog " style="z-index: 9999999999">
         <div class="modal-content bg-light">
-            {{-- <div class="modal-header">
-                <h5 class="modal-title" id="modalWalletInfoLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div> --}}
             <div class="modal-body">
                 <div class="">
                     <x-icon.wallet></x-icon.wallet>
