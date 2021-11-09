@@ -69,9 +69,9 @@
     /* Add the ability to scroll y axis*/
 }
 
-/* .cursor-pointer {
+.cursor-pointer {
   cursor: pointer;
-} */
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .scrollbar-none::-webkit-scrollbar {
