@@ -14,8 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('last_seen', '!=', null)
-            ->orderBy('last_seen', 'desc')->get();
+        $users = User::all();
+        // ->orderBy('last_seen', 'desc')->get();
         return view("user-online", compact("users"));
     }
 

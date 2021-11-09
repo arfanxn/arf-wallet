@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,3 +30,12 @@ Route::get('/home', function () {
 });
 
 Route::get("user_online", [UserController::class, "index"]);
+Route::get("user_online/logout", function () {
+    Auth::logout();
+});
+Route::get("user_online/info", function () {
+    dd(Auth::user());
+});
+Route::get("user_online/login", function () {
+    dd(Auth::attempt(["phone_number" => "089506089254", "password" => 11112222]));
+});
