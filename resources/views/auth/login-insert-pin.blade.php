@@ -11,20 +11,23 @@
         </div>
 
         <div class="text-center mt-5">
-            <p class="text-white mb-4">Konfirmasi <span class="fw-bold">Nomor PIN</span> kamu untuk lanjut</p>
-            <form method="POST" class="mt-4 text-center position-relative w-100" action="{{ route('register.store') }}"
+            <p class="text-white mb-4">Masukan <span class="fw-bold">Nomor PIN</span> kamu untuk lanjut</p>
+            <form method="POST" class="mt-4 text-center position-relative w-100" action="{{ route('login.handle') }}"
                 id="form-phone-number"> @csrf
                 <div class="input-group px-5">
                     <span class="input-group-text bg-white py-0">PIN
                     </span>
-                    <input name="confirm_pin_number" type="text"
-                        class="form-control bg-white text-dark @error('pin_number') is-invalid @enderror"
+                    <input name="pin_number" type="password"
+                        class="form-control bg-white text-dark @error('pin_number') is-invalid @enderror @if (session()->has('danger')) is-invalid @endif "
                         placeholder="123456">
                 </div>
             </form>
-            @error('confirm_pin_number')
+            @error('pin_number')
                 <p class="text-danger my-0 fw-bold badge bg-white">{{ $message }}</p>
             @enderror
+            @if (session()->has('danger'))
+                <p class="text-danger my-0 fw-bold badge bg-white">{{ session()->get('danger') }}</p>
+            @endif
             <p class="text-white text-center mx-auto px-4 text-break mt-4" style="width: 90%">
                 Dengan melanjutkan, kamu setuju dengan <span class="fw-bold">Syarat & Ketentuan</span> dan
                 <span class="fw-bold">Kebijakan Privasi</span> kami

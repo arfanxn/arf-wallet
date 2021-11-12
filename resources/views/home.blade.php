@@ -25,11 +25,20 @@
         </div>
     </div>
 
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show text-center mx-auto mt-3" role="alert"
+            style="width: 85%">
+            <strong>{{ session()->get('success') }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="text-center mt-3 ">
         <h4 class="badge bg-primary fs-4 py-3" style="width: 85%">
             <x-icon.wallet /> ARF-WALLET
         </h4>
     </div>
+
 
     <div id="carouselExampleInterval" class="carousel slide mt-3" data-bs-ride="carousel">
         <div class="carousel-inner">

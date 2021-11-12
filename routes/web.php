@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,25 +18,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get("register", [RegisterController::class, "create"])->name("register.create");
-Route::post("register/confirm_pin", [RegisterController::class, "confirmPin"])
-    ->name("register.confirmPin");
-Route::post("register", [RegisterController::class, "store"])->name("register.store");
+Route::middleware("guest")->group(function () {
 
-Route::get("login", [LoginController::class, "show"])->name("login.show");
-Route::post("login", [LoginController::class, "handlePhoneNumber"])->name("login.handlePhoneNumber");
+    Route::group(["prefix" => "register", "as" => "register.",], function () {
+        Route::get("", ["uses" => RegisterController::class . "@create", "as" => "create"]);
+        Route::post("confirm_pin", ["uses" => RegisterController::class . "@confirmPin", "as" => "confirmPin"]);
+        Route::post("", ["uses" => RegisterController::class . "@store", "as" => "store"]);
+    });
 
-Route::get('/home', function () {
-    return view('home');
+    Route::group(["prefix" => "login", "as" => "login.",], function () {
+        Route::get("", ["uses"  => LoginController::class . "@show", "as" => "show"]);
+        Route::post("", ["uses" => LoginController::class . "@handlePhoneNumber", "as" => "handlePhoneNumber"]);
+        Route::get("insert_pin", ["uses" => LoginController::class . "@showInsertPin", "as" => "showInsertPin"]);
+        Route::post("handle", ["uses" => LoginController::class . "@handle", "as" => "handle"]);
+    });
 });
 
-Route::get("user_online", [UserController::class, "index"]);
-Route::get("user_online/logout", function () {
-    Auth::logout();
+Route::middleware("auth")->group(function () {
+    Route::get('/', [HomeController::class, "index"])->name("home");
 });
-Route::get("user_online/info", function () {
-    dd(Auth::user());
-});
-Route::get("user_online/login", function () {
-    dd(Auth::attempt(["phone_number" => "089506089254", "password" => 11112222]));
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  USER ONLINE 
+Route::group(["prefix" => "auth"],  function () {
+    Route::get("", function () {
+        $users = \App\Models\User::all();
+        return view("user-online", compact("users"));
+    });
+    Route::get("logout", fn () => Auth::logout());
+    Route::get("info", fn () => dd(Auth::user(), Auth::check()));
+    Route::get("login", function () {
+        Auth::attempt(["phone_number" => "089506089254", "password" => "111222"]);
+        // dd(Auth::check());
+    });
 });

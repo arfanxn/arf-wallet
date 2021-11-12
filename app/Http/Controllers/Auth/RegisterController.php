@@ -14,20 +14,16 @@ class RegisterController extends Controller
 {
     public function create()
     {
-        return  url()->previous() == route("login.show")
-            || url()->previous() == route("register.create")
-            || url()->previous() == route("register.confirmPin") ?
-            view("auth.register", ["phone_number" => session()->get('phone_number')]) :
 
-            redirect()->to(RouteServiceProvider::HOME);
+
+        return Session::has("phone_number") ?
+            view("auth.register", ["phone_number" => Session::get('phone_number')]) :
+
+            redirect()->to(route("login.show"));
     }
 
     public function confirmPin(Request $request)
     {
-        if (url()->previous() != route("register.create")) {
-            return redirect()->to(RouteServiceProvider::HOME);
-        }
-
         $attribute = $request->validate([
             "phone_number" => [
                 "required",  "numeric", "digits_between:10,14", "unique:users,phone_number",
@@ -40,27 +36,33 @@ class RegisterController extends Controller
         return view("auth.register-confirm-pin");
     }
 
+    // public function showConfirmPin()
+    // {
+    //     return view("auth.register-confirm-pin");
+    // }
+
     public function store(Request $request)
     {
-        foreach (Session::all() as $key => $value) {
-            if ($key[0] != '_') {
-                $request->merge([$key => $value]);
-            }
-        }
+        $request->merge(["pin_number" => Session::pull("pin_number")]);
         $request->validate([
             "confirm_pin_number" => ["required", "digits_between:6,8",  "same:pin_number"]
         ]);
+
         User::create([
-            "name" => $request->fullname, "email" => $request->email,
-            "phone_number" => $request->phone_number, "password" => bcrypt($request->pin_number)
+            "name" => Session::pull("fullname"),
+            "email" => Session::pull("email"),
+            "phone_number" => Session::get("phone_number"),
+            "password" => bcrypt($request->pin_number)
         ]);
-        Session::flush();
+
+        // event()
 
         Auth::attempt([
-            "phone_number" => $request->phone_number,
+            "phone_number" => Session::pull("phone_number"),
             "password" => $request->pin_number,
         ]);
 
-        return redirect()->to(RouteServiceProvider::HOME);
+        return redirect()->to(RouteServiceProvider::HOME())
+            ->with(["success" => "Akun anda telah teregistrasi, kini anda dapat login dengan Nomor HP."]);
     }
 }

@@ -16,7 +16,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            "phone_number" => $this->faker->phoneNumber(),
+            "phone_number" => preg_replace("/[^0-9]+/", "", $this->faker->phoneNumber()),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt("111222"), // password
