@@ -60,6 +60,12 @@ Route::get(
     }
 );
 
+// USER VERIFICATION 
+Route::get("user-verification",  function () {
+    $event = event(new  \Illuminate\Auth\Events\Registered(auth()->user()));
+    dd($event);
+});
+
 // TEST NOTIFICATION 
 Route::get("notification", function () {
     \Illuminate\Support\Facades\Notification
