@@ -49,6 +49,19 @@ Route::middleware("auth")->group(function () {
 
 
 
+// TEST MAIL 
+Route::get(
+    'send-mail',
+    function () {
+        $details = [
+            'title' => "Mail from ARF-WALLET",
+            'body' => 'This is for testing email using smtp'
+        ];
+        
+        \Illuminate\Support\Facades\Mail::to('arfan2173@gmail.com')->send(new \App\Mail\TestMail($details));
+        dd("Email is Sent.");
+    }
+);
 
 //  USER ONLINE 
 Route::group(["prefix" => "auth"],  function () {
