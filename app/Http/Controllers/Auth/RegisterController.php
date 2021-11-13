@@ -14,8 +14,6 @@ class RegisterController extends Controller
 {
     public function create()
     {
-
-
         return Session::has("phone_number") ?
             view("auth.register", ["phone_number" => Session::get('phone_number')]) :
 
