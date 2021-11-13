@@ -62,7 +62,8 @@ Route::get(
 
 // USER VERIFICATION 
 Route::get("user-verification",  function () {
-    $event = event(new  \Illuminate\Auth\Events\Registered(auth()->user()));
+    $user = \App\Models\User::find(1);
+    $event = event(new  \Illuminate\Auth\Events\Registered($user));
     dd($event);
 });
 
