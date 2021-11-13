@@ -45,10 +45,6 @@ Route::middleware("auth")->group(function () {
 
 
 
-
-
-
-
 // TEST MAIL 
 Route::get(
     'send-mail',
@@ -57,11 +53,19 @@ Route::get(
             'title' => "Mail from ARF-WALLET",
             'body' => 'This is for testing email using smtp'
         ];
-        
+        //  for see the html of the emails
+        // return new \App\Mail\TestMail($details);
         \Illuminate\Support\Facades\Mail::to('arfan2173@gmail.com')->send(new \App\Mail\TestMail($details));
         dd("Email is Sent.");
     }
 );
+
+// TEST NOTIFICATION 
+Route::get("notification", function () {
+    \Illuminate\Support\Facades\Notification
+        ::route("mail", "arfan2173@gmail.com")
+        ->notify(new \App\Notifications\Wallet\TransferSuccess());
+});
 
 //  USER ONLINE 
 Route::group(["prefix" => "auth"],  function () {

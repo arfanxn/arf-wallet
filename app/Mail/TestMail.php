@@ -32,6 +32,6 @@ class TestMail extends Mailable
     public function build()
     {
         return $this->subject("mail from ARF-WALLET")
-            ->view('emails.TestMail');
+            ->view('emails.test-mail');
     }
 }
