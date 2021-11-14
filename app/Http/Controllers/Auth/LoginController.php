@@ -50,10 +50,10 @@ class LoginController extends Controller
 
         $credentials = [
             "phone_number" => Session::get("phone_number"),
-            "password" => $request->phone_number
+            "password" => $request->pin_number
         ];
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, remember: true)) {
             Session::forget("phone_number");
             return redirect()->to(RouteServiceProvider::HOME());
         }

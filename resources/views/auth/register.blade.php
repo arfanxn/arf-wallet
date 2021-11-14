@@ -14,14 +14,14 @@
                 <br>Silahkan <span class="fw-bold">Daftar</span> untuk lanjut.
             </p>
             <form method="POST" class="mt-4 text-center position-relative w-100 "
-                action="{{ route('register.confirmPin') }}" id="form-phone-number"> @csrf
+                action="{{ route('register.handleCreate') }}" id="form-phone-number"> @csrf
                 <div class="input-group px-5">
                     <span class="input-group-text bg-white py-0 px-1">
                         <img class="" src="{{ asset('icon/indonesia-flag.png') }}">
                         <small class="my-auto d-inline fw-bold text-dark px-1">+62</small>
                     </span>
-                    <input name="phone_number" value="{{ $phone_number ?? old('phone_number') }}" type="text"
-                        class="form-control bg-white text-dark @error('phone_number') is-invalid @enderror"
+                    <input name="phone_number" readonly="readonly" value="{{ $phone_number ?? old('phone_number') }}"
+                        type="text" class="form-control bg-white text-dark @error('phone_number') is-invalid @enderror"
                         placeholder="Nomor HP">
                 </div>
                 @error('phone_number')

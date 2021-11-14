@@ -5,7 +5,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,16 +23,33 @@ use Illuminate\Support\Facades\Route;
 Route::middleware("guest")->group(function () {
 
     Route::group(["prefix" => "register", "as" => "register.",], function () {
-        Route::get("", ["uses" => RegisterController::class . "@create", "as" => "create"]);
-        Route::post("confirm_pin", ["uses" => RegisterController::class . "@confirmPin", "as" => "confirmPin"]);
-        Route::post("", ["uses" => RegisterController::class . "@store", "as" => "store"]);
+        Route::get("", [
+            "uses" => RegisterController::class . "@create", "as" => "create"
+        ]);
+        Route::post("handle-create", [
+            "uses" => RegisterController::class . "@handleCreate", "as" => "handleCreate"
+        ]);
+        Route::get("confirm-pin", [
+            "uses" => RegisterController::class . "@showConfirmPin",
+            "as" => "showConfirmPin"
+        ]);
+        Route::post("", [
+            "uses" => RegisterController::class . "@store",
+            "as" => "store"
+        ]);
     });
 
     Route::group(["prefix" => "login", "as" => "login.",], function () {
         Route::get("", ["uses"  => LoginController::class . "@show", "as" => "show"]);
-        Route::post("", ["uses" => LoginController::class . "@handlePhoneNumber", "as" => "handlePhoneNumber"]);
-        Route::get("insert_pin", ["uses" => LoginController::class . "@showInsertPin", "as" => "showInsertPin"]);
-        Route::post("handle", ["uses" => LoginController::class . "@handle", "as" => "handle"]);
+        Route::post("", [
+            "uses" => LoginController::class . "@handlePhoneNumber", "as" => "handlePhoneNumber"
+        ]);
+        Route::get("insert-pin", [
+            "uses" => LoginController::class . "@showInsertPin", "as" =>  "showInsertPin"
+        ]);
+        Route::post("handle", [
+            "uses" => LoginController::class . "@handle", "as" => "handle"
+        ]);
     });
 });
 
@@ -44,6 +63,59 @@ Route::middleware("auth")->group(function () {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SIGNED URL   
+Route::get("signed", function () {
+    return URL::signedRoute("session", ["user" => "arfan"]);
+});
+
+// SESSION VS CACHE 
+Route::get("session", function () {
+    dd(request()->all());
+    return view("tests.session-input");
+})->middleware("signed")->name("session");
+
+Route::post("session-post", function () {
+    $input = request()->input;
+    session()->put(["input" => $input]);
+    dd(session()->get("input"));
+})->name("session.post");
+
+Route::get("cache", function () {
+    return view("tests.cache-input");
+});
+Route::post("cache-post", function () {
+    cache()->has("input") ? dd(cache()->get("input"))  : "";
+    $input = request()->input;
+    cache()->put("input", $input);
+    dd(cache()->get("input"));
+})->name("cache.post");
 
 // TEST MAIL 
 Route::get(
@@ -78,7 +150,7 @@ Route::get("notification", function () {
 Route::group(["prefix" => "auth"],  function () {
     Route::get("", function () {
         $users = \App\Models\User::all();
-        return view("user-online", compact("users"));
+        return view("tests.user-online", compact("users"));
     });
     Route::get("logout", fn () => Auth::logout());
     Route::get("info", fn () => dd(Auth::user(), Auth::check()));

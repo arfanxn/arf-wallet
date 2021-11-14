@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UserVerification extends Notification
+class SendEmailVerificationNotification extends Notification
 {
     use Queueable;
 
@@ -41,7 +41,8 @@ class UserVerification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('USER VERIFICATION')
+            ->subject("Verifikasi email")
+            ->line('')
             ->action('Verify', url('/'))
             ->line('Please Verify')
             ->markdown("vendor.notifications.email");

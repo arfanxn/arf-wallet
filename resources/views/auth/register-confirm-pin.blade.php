@@ -17,7 +17,7 @@
                 <div class="input-group px-5">
                     <span class="input-group-text bg-white py-0">PIN
                     </span>
-                    <input name="confirm_pin_number" type="text"
+                    <input name="confirm_pin_number" type="password"
                         class="form-control bg-white text-dark @error('pin_number') is-invalid @enderror"
                         placeholder="123456">
                 </div>
