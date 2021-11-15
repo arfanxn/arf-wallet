@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +21,13 @@ use Illuminate\Support\Facades\URL;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Route::middleware("signed")->group(function () {
+//     Route::get(
+//         "email-verification/{user:id}",
+//         [EmailVerificationController::class, "verifyWithSignedRoute"]
+//     )->name("emailVerificationWithSignedRoute");
+// });
 
 Route::middleware("guest")->group(function () {
 
@@ -87,35 +96,11 @@ Route::middleware("auth")->group(function () {
 
 
 
-
-
-
-// SIGNED URL   
-Route::get("signed", function () {
-    return URL::signedRoute("session", ["user" => "arfan"]);
+// VERIFICATION CODE 
+Route::get('verification-code', function () {
+    $user = \App\Models\User::find(1);
+    \App\Models\VerificationCode::send($user);
 });
-
-// SESSION VS CACHE 
-Route::get("session", function () {
-    dd(request()->all());
-    return view("tests.session-input");
-})->middleware("signed")->name("session");
-
-Route::post("session-post", function () {
-    $input = request()->input;
-    session()->put(["input" => $input]);
-    dd(session()->get("input"));
-})->name("session.post");
-
-Route::get("cache", function () {
-    return view("tests.cache-input");
-});
-Route::post("cache-post", function () {
-    cache()->has("input") ? dd(cache()->get("input"))  : "";
-    $input = request()->input;
-    cache()->put("input", $input);
-    dd(cache()->get("input"));
-})->name("cache.post");
 
 // TEST MAIL 
 Route::get(
@@ -141,9 +126,14 @@ Route::get("user-verification",  function () {
 
 // TEST NOTIFICATION 
 Route::get("notification", function () {
-    \Illuminate\Support\Facades\Notification
-        ::route("mail", "arfan2173@gmail.com")
-        ->notify(new \App\Notifications\Wallet\TransferSuccess());
+    $user = \App\Models\User::find(1);
+    \App\Models\VerificationCode::send($user);
+    return (new \App\Notifications\EmailVerification($user))
+        ->toMail("");
+
+    // \Illuminate\Support\Facades\Notification
+    //     ::route("mail", "arfan2173@gmail.com")
+    //     ->notify(new \App\Notifications\Wallet\TransferSuccess());
 });
 
 //  USER ONLINE 

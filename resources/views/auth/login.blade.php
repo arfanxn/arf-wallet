@@ -4,14 +4,11 @@
         <link rel="stylesheet" href="{{ asset('auth/css/login.css') }}">
     </x-slot>
 
-    <main class="bg-primary  w-100 " style="height: 100vh">
-        <div class="text-center mx-auto bg-white p-2 w-100 ">
-            <x-icon.wallet />
-            <h4 class="fs-4 d-inline align-middle fw-bold text-dark">ARF-WALLET</h4>
-        </div>
+    <x-header />
 
-        <div class="text-center mt-5">
-            <p class="text-white mb-4">Masukan Nomor <span class="fw-bold">HP</span> Kamu untuk lanjut</p>
+    <main class="bg-primary w-100  pt-5" style="height: 100vh">
+        <div class="text-center">
+            <p class="text-white ">Masukan Nomor <span class="fw-bold">HP</span> Kamu untuk lanjut</p>
             <form method="POST" class="mt-4 text-center position-relative w-100"
                 action="{{ route('login.handlePhoneNumber') }}" id="form-phone-number"> @csrf
                 <div class="input-group px-5">

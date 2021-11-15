@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendEmailVerificationNotification extends Notification
+class VerificationCodeNotification extends Notification
 {
     use Queueable;
 
@@ -16,9 +17,11 @@ class SendEmailVerificationNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    private $code;
+
+    public function __construct($code)
     {
-        //
+        $this->code = $code;
     }
 
     /**
@@ -38,14 +41,13 @@ class SendEmailVerificationNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($notifiable = "")
     {
         return (new MailMessage)
-            ->subject("Verifikasi email")
-            ->line('')
-            ->action('Verify', url('/'))
-            ->line('Please Verify')
-            ->markdown("vendor.notifications.email");
+            ->subject("Kode Verfikasi |" . config("app.name"))
+            ->view("notifications.verification-code", [
+                "verificationCode" => $this->code
+            ]);
     }
 
     /**
