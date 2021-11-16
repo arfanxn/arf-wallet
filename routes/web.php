@@ -92,10 +92,6 @@ Route::middleware("auth")->group(function () {
 
 
 
-
-
-
-
 // VERIFICATION CODE 
 Route::get('verification-code', function () {
     $user = \App\Models\User::find(1);
