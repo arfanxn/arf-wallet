@@ -44,7 +44,7 @@ class VerificationCodeNotification extends Notification
     public function toMail($notifiable = "")
     {
         return (new MailMessage)
-            ->subject("Kode Verfikasi |" . config("app.name"))
+            ->subject("Kode Verfikasi | " . config("app.name"))
             ->view("notifications.verification-code", [
                 "verificationCode" => $this->code
             ]);
