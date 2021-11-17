@@ -18,8 +18,8 @@ class CreateTransactionsTable extends Migration
             // $table->foreignId("from_user_id")->constrained("users", "id");
             $table->foreignId("from_wallet_id")->constrained("wallets", "id");
             // $table->foreignId("to_user_id")->constrained("users", "id");
-            $table->foreignId("to_wallet_id")->constrained("wallets", "id");
-            $table->unsignedBigInteger("discount_id")->nullable();
+            $table->foreignId("to_wallet_id")->nullable()->constrained("wallets", "id");
+            $table->foreignId("transaction_type_id")->constrained("transaction_types", "id");
             $table->unsignedBigInteger("amount");
             $table->unsignedBigInteger("charge")->nullable();
             $table->string("title");
