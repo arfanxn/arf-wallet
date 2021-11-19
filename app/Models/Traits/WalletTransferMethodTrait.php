@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Models\Traits;
+
 use App\Exceptions\WalletException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
