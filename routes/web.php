@@ -22,13 +22,6 @@ use Illuminate\Support\Facades\URL;
 |
 */
 
-// Route::middleware("signed")->group(function () {
-//     Route::get(
-//         "email-verification/{user:id}",
-//         [EmailVerificationController::class, "verifyWithSignedRoute"]
-//     )->name("emailVerificationWithSignedRoute");
-// });
-
 Route::middleware("guest")->group(function () {
 
     Route::group(["prefix" => "register", "as" => "register.",], function () {
@@ -112,25 +105,6 @@ Route::get(
     }
 );
 
-// USER VERIFICATION 
-Route::get("user-verification",  function () {
-    $user = \App\Models\User::find(1);
-    $event = event(new  \Illuminate\Auth\Events\Registered($user));
-    dd($event);
-});
-
-// TEST NOTIFICATION 
-Route::get("notification", function () {
-    $user = \App\Models\User::find(1);
-    \App\Models\VerificationCode::send($user);
-    return (new \App\Notifications\EmailVerification($user))
-        ->toMail("");
-
-    // \Illuminate\Support\Facades\Notification
-    //     ::route("mail", "arfan2173@gmail.com")
-    //     ->notify(new \App\Notifications\Wallet\TransferSuccess());
-});
-
 //  USER ONLINE 
 Route::group(["prefix" => "auth"],  function () {
     Route::get("", function () {
@@ -141,6 +115,6 @@ Route::group(["prefix" => "auth"],  function () {
     Route::get("info", fn () => dd(Auth::user(), Auth::check()));
     Route::get("login", function () {
         Auth::attempt(["phone_number" => "089506089254", "password" => "111222"]);
-        // dd(Auth::check());
+        dd(Auth::check());
     });
 });
