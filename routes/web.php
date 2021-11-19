@@ -92,10 +92,9 @@ Route::middleware("auth")->group(function () {
 
 
 
-// VERIFICATION CODE 
-Route::get('verification-code', function () {
-    $user = \App\Models\User::find(1);
-    \App\Models\VerificationCode::send($user);
+// TEST 
+Route::get('test', function () {
+    \App\Models\Wallet::transfer("AKU", 999);
 });
 
 // TEST MAIL 

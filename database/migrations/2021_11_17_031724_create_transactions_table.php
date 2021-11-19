@@ -16,13 +16,12 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             // $table->foreignId("from_user_id")->constrained("users", "id");
+            $table->string("tx_hash")->unique();
             $table->foreignId("from_wallet_id")->constrained("wallets", "id");
             // $table->foreignId("to_user_id")->constrained("users", "id");
             $table->foreignId("to_wallet_id")->nullable()->constrained("wallets", "id");
-            $table->foreignId("transaction_type_id")->constrained("transaction_types", "id");
             $table->unsignedBigInteger("amount");
-            $table->unsignedBigInteger("charge")->nullable();
-            $table->string("title");
+            $table->unsignedBigInteger("charge")->default(0);
             $table->string("description", 1000)->nullable();
             $table->boolean("status");
             $table->timestamps();

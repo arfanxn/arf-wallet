@@ -22,6 +22,9 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontFlash = [
+        "current_pin_number",
+        "pin_number",
+        "confirm_pin_number",
         'current_password',
         'password',
         'password_confirmation',
