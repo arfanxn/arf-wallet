@@ -89,6 +89,8 @@ Route::middleware("auth")->group(function () {
 Route::get('test', function () {
     \App\Models\Wallet::transfer("AKU", 999);
 });
+// TEST RENDER 
+Route::view("test-view", "accounts.account");
 
 // TEST MAIL 
 Route::get(

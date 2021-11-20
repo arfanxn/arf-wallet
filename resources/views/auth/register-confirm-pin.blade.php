@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="{{ asset('auth/css/login.css') }}">
     </x-slot>
 
-    <x-header />
+    <x-brand-header />
 
     <main class="bg-primary  w-100  pt-5" style="height: 100vh">
 

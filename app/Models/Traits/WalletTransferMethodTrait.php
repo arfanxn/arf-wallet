@@ -15,9 +15,6 @@ trait WalletTransferMethodTrait
         float $charge = 0,
         string $description = ""
     ) {
-        $tx_hash = strtoupper(uniqid() . Str::random(11));
-        $toWallet = static::where("address", $address);
-
         DB::beginTransaction();
         try {
             $fromWallet = static::where("user_id", 1)
@@ -26,6 +23,8 @@ trait WalletTransferMethodTrait
             if (!$fromWallet) throw new
                 WalletException("Saldo Wallet kamu tidak cukup!");
 
+            $tx_hash = strtoupper(uniqid() . Str::random(11));
+            $toWallet = static::where("address", $address);
             if (!$toWallet->exists()) throw new
                 WalletException("Alamat Wallet tidak ditemukan atau tidak valid!");
 
