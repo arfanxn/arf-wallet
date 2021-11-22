@@ -30,9 +30,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(Wallet::class, "from_wallet_id", "id");
     }
-
-    public function type()
-    {
-        return $this->belongsTo(TransactionType::class, "transaction_type_id", "id");
-    }
 }
