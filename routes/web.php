@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\UserController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +59,14 @@ Route::middleware("guest")->group(function () {
 
 Route::middleware("auth")->group(function () {
     Route::get('/', [HomeController::class, "index"])->name("home");
+
+    Route::get("transaction-history", [TransactionHistoryController::class, "index"])->name("transaction-history");
+
+    Route::group(["prefix" => "account", "as" => "account."], function () {
+        Route::get("", [
+            "uses" => AccountController::class . "@index", "as" => "index"
+        ]);
+    });
 });
 
 
@@ -87,10 +97,11 @@ Route::middleware("auth")->group(function () {
 
 // TEST 
 Route::get('test', function () {
+    dd(\App\Models\Wallet::find(1)->loadMissing("transferedTransactions")->transferedTransactions);
     \App\Models\Wallet::transfer("AKU", 999);
 });
 // TEST RENDER 
-Route::view("test-view", "accounts.account");
+Route::view("test-view", "accounts.index");
 
 // TEST MAIL 
 Route::get(
@@ -117,6 +128,6 @@ Route::group(["prefix" => "auth"],  function () {
     Route::get("info", fn () => dd(Auth::user(), Auth::check()));
     Route::get("login", function () {
         Auth::attempt(["phone_number" => "089506089254", "password" => "111222"]);
-        dd(Auth::check());
+        // dd(Auth::check());
     });
 });
