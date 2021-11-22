@@ -1,4 +1,4 @@
-<x-app-layout title="Home">
+<x-app-layout title="Beranda">
     <x-slot name="styles">
         <link rel="stylesheet" href="{{ asset('home/css/home.css') }}">
     </x-slot>
