@@ -14,17 +14,17 @@ class Wallet extends Model
 
     protected $fillable = ["balance"];
 
-    public function user()
+    public function owner()
     {
         return $this->belongsTo(User::class, "user_id", "id");
     }
 
-    public function transferedTransaction()
+    public function transferedTransactions()
     {
         return $this->hasMany(Transaction::class, "from_wallet_id", "id");
     }
 
-    public function receivedTransaction()
+    public function receivedTransactions()
     {
         return $this->hasMany(Transaction::class, "to_wallet_id", "id");
     }
