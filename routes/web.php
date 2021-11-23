@@ -7,6 +7,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\WalletResource;
+use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -87,12 +89,19 @@ Route::middleware("auth")->group(function () {
 
 
 
+// TEST TRANSFER 
+Route::get("transfer", function () {
+    dd(Wallet::transfer("PDLZMV4IGHY4J22M", 999999));
+});
 
 
 
 
-
-
+// FRONTEND API // FRONTEND API // FRONTEND API // FRONTEND API //  FRONTEND API // 
+Route::get("api/test", function () {
+    return new WalletResource(\App\Models\Wallet::find(1)
+        ->loadMissing("owner",  "transferedTransactions.toWallet.owner", "receivedTransactions"));
+});
 
 
 // TEST 

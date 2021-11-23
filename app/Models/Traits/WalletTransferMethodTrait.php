@@ -17,22 +17,27 @@ trait WalletTransferMethodTrait
     ) {
         DB::beginTransaction();
         try {
-            $fromWallet = static::where("user_id", 1)
-                ->where("balance", ">=", ($amount + $charge))
-                ->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
-            if (!$fromWallet) throw new
-                WalletException("Saldo Wallet kamu tidak cukup!");
+            if ($amount < 10000) return throw new WalletException("Minimal transfer adalah 10.000");
 
-            $tx_hash = strtoupper(uniqid() . Str::random(11));
+            $fromWallet = Auth::user()->wallet()
+                ->where("balance", ">=", ($amount + $charge));
+
+            if ($address == $fromWallet->first()->address)
+                throw new WalletException("Tidak dapat mengirim ke Wallet yang sama!");
+
+            !$fromWallet ? throw new WalletException("Saldo Wallet kamu tidak cukup!")
+                : $fromWallet->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
+
             $toWallet = static::where("address", $address);
-            if (!$toWallet->exists()) throw new
-                WalletException("Alamat Wallet tidak ditemukan atau tidak valid!");
+            !$toWallet->exists() ? throw new
+                WalletException("Alamat Wallet tujuan tidak ditemukan atau tidak valid!")
+                : $toWallet->update(["balance" => DB::raw("balance + " . $amount)]);
 
-            $toWallet->update(["balance" => DB::raw("balance + " . $amount)]);
+            $tx_hash = strtoupper(Str::random(10)) . preg_replace("/[^0-9]+/",  "", now()->toDateTimeString());
 
-            DB::table("transactions")->create([
+            DB::table("transactions")->insert([
                 "tx_hash" => $tx_hash,
-                "from_wallet_id" => 1,
+                "from_wallet_id" => $fromWallet->first()->id,
                 "to_wallet_id" => $toWallet->first()->id,
                 "amount" => $amount,
                 "charge" => $charge,

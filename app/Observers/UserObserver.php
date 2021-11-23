@@ -18,8 +18,8 @@ class UserObserver
     {
         Wallet::create([
             "user_id" => $user->id,
-            "address" => strtoupper(Str::random()),
-            "balance" => $user->id == 1 ? 9999999999 : 0,
+            "address" => strtoupper(Str::random(16)),
+            "balance" => $user->id == 1 ? 1844674407370955161 : 0,
         ]);
     }
 

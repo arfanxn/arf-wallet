@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\TransactionHistoriesController;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\WalletResource;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 // Route::middleware("auth")->group(function () {
 Route::get("transaction_histories", [TransactionHistoriesController::class, "sortByAsc"]);

@@ -10,7 +10,9 @@ use App\Models\Traits\WalletTransferMethodTrait;
 
 class Wallet extends Model
 {
-    use HasFactory, WalletTransferMethodTrait;
+    use HasFactory;
+
+    use WalletTransferMethodTrait;
 
     protected $fillable = ["balance"];
 
