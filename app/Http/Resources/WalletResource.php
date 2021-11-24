@@ -26,6 +26,8 @@ class WalletResource extends JsonResource
             "owner" => new UserResource($this->whenLoaded("owner")),
             "transfered_transactions" =>
             TransactionResource::collection($this->whenLoaded("transferedTransactions")),
+            "received_transactions" =>
+            TransactionResource::collection($this->whenLoaded("receivedTransactions"))
         ];
     }
 }

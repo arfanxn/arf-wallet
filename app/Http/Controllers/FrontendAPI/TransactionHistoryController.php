@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\FrontendAPI;
 
+use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-        return view("transactions.index");
+        //
     }
 
     /**
