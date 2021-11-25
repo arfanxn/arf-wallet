@@ -30,11 +30,5 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
 
         JsonResource::withoutWrapping();
-
-        Blade::directive('currency', function ($money) {
-            $money =  number_format($money);
-            $money = str_replace(",", ".", $money);
-            return "<?php echo $money ; ?>";
-        });
     }
 }
