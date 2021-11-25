@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Exceptions\WalletException;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -22,11 +23,11 @@ trait WalletTransferMethodTrait
             $fromWallet = Auth::user()->wallet()
                 ->where("balance", ">=", ($amount + $charge));
 
-            if ($address == $fromWallet->first()->address)
-                throw new WalletException("Tidak dapat mengirim ke Wallet yang sama!");
-
             !$fromWallet ? throw new WalletException("Saldo Wallet kamu tidak cukup!")
                 : $fromWallet->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
+
+            if ($address == $fromWallet->first()->address)
+                throw new WalletException("Tidak dapat mengirim ke Wallet yang sama!");
 
             $toWallet = static::where("address", $address);
             !$toWallet->exists() ? throw new
@@ -35,7 +36,7 @@ trait WalletTransferMethodTrait
 
             $tx_hash = strtoupper(Str::random(10)) . preg_replace("/[^0-9]+/",  "", now()->toDateTimeString());
 
-            DB::table("transactions")->insert([
+            Transaction::create([
                 "tx_hash" => $tx_hash,
                 "from_wallet_id" => $fromWallet->first()->id,
                 "to_wallet_id" => $toWallet->first()->id,

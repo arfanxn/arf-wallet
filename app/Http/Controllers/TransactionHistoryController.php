@@ -17,7 +17,6 @@ class TransactionHistoryController extends Controller
     {
         $transactions = Auth::user()->wallet->allTransactions()
             ->orderBy("created_at", "desc")->get();
-        // dd($transactions);
         return view("transactions.index", compact("transactions"));
     }
 
