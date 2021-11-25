@@ -85,7 +85,7 @@ Route::middleware("auth")->group(function () {
 
 // TEST TRANSFER 
 Route::get("transfer", function () {
-    dd(Wallet::transfer("PDLZMV4IGHY4J22M", 999999));
+    dd(Wallet::transfer("LGFY0HNQ9409Z7XN", 999999, 0, "hello world"));
 });
 
 // TEST RENDER 
