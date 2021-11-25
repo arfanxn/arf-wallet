@@ -5,9 +5,19 @@
             <a href="{{ route('home') }}" class="me-2 text-decoration-none text-white ">&#10094;</a> Riwayat Transaksi
         </h5>
     </header>
-
     <main class="bg-light mt-3 pt-3">
-
+        @foreach ($transactions as $transaction)
+            <div class="d-flex justify-content-between py-3 border-bottom border-secondary mx-3">
+                <div class="my-auto">
+                    <span class="d-block">
+                        {{ $authWallet->id == $transaction->from_wallet_id ? 'Kirim Uang' : 'Terima Uang' }}</span>
+                    <small>{{ $transaction->created_at }}</small>
+                </div>
+                <div class="my-auto">
+                    <span class="align-middle">{{ toIDR($transaction->amount) }}</span>
+                </div>
+            </div>
+        @endforeach
     </main>
 
     <footer
