@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class TransactionHistoryController extends Controller
+class TransactionHistoriesController extends Controller
 {
     /**
      * Display a listing of the resource.
