@@ -20,7 +20,7 @@
                     <a href="" class="float-end badge bg-primary text-decoration-none text-white fs-6 mt-1">+ TOP UP</a>
                     <p class="m-0 fs-5">Saldo</p>
                     <small class="align-top d-inline">Rp</small>
-                    <p class="d-inline align-baseline">200.000</p>
+                    <p class="d-inline align-baseline">{{ toCurrency($authWallet->balance) }}</p>
 
                 </div>
             </div>

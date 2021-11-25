@@ -46,7 +46,7 @@
                 <x-icon.wallet /> <span class="ms-1">Saldo</span>
             </div>
             <div class="align-middle pe-1">
-                <span>Rp @currency($wallet->balance)</span>
+                <span>{{ toIDR($wallet->balance) }}</span>
                 <a href="" class="text-decoration-none text-dark">
                     &#10095;</a>
             </div>

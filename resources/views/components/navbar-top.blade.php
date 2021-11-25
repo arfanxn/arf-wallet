@@ -2,7 +2,7 @@
     <x-icon.wallet></x-icon.wallet>
     <div class="d-inline pe-2">
         <small class="align-top d-inline">Rp</small>
-        <p class="d-inline align-baseline">200.000</p>
+        <p class="d-inline align-baseline">{{ toCurrency($authWallet->balance) }}</p>
     </div>
     <img class="btnModal" data-modal-name="wallet-info" width="14px" height="14px"
         src="{{ asset('icon/caret-dropdown.png') }}" alt="">
