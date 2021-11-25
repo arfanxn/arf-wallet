@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontendAPI\TransactionHistoriesController;
 use App\Http\Resources\WalletResource;
 use Illuminate\Support\Facades\Route;
 

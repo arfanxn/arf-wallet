@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionHistoryController extends Controller
 {
@@ -14,7 +15,10 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-        //
+        $transactions = Auth::user()->wallet->allTransactions()
+            ->orderBy("created_at", "desc")->get();
+        // dd($transactions);
+        return view("transactions.index", compact("transactions"));
     }
 
     /**

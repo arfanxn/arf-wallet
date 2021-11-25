@@ -21,6 +21,12 @@ class Wallet extends Model
         return $this->belongsTo(User::class, "user_id", "id");
     }
 
+    public function allTransactions()
+    {
+        $id = Auth::user()->id;
+        return Transaction::where("from_wallet_id", $id)->orWhere("to_wallet_id", $id);
+    }
+
     public function transferedTransactions()
     {
         return $this->hasMany(Transaction::class, "from_wallet_id", "id");
