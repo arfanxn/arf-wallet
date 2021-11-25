@@ -49,7 +49,8 @@ class TransactionHistoryController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        //
+        // dd($transaction);
+        return view("transactions.show");
     }
 
     /**

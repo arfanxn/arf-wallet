@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionHistoryController;
+use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -56,7 +57,14 @@ Route::middleware("guest")->group(function () {
 Route::middleware("auth")->group(function () {
     Route::get('/', [HomeController::class, "index"])->name("home");
 
-    Route::get("transaction-history", [TransactionHistoryController::class, "index"])->name("transaction-history");
+    Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
+        Route::get("history", [
+            "uses" => TransactionHistoryController::class .  "@index", "as" => "history"
+        ]);
+        Route::get("detail/{transaction:tx_hash}", [
+            "uses" => TransactionHistoryController::class . "@show", "as" => "detail"
+        ]);
+    });
 
     Route::group(["prefix" => "account", "as" => "account."], function () {
         Route::get("", [
