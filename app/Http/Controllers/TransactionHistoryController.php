@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class TransactionHistoryController extends Controller
 {
@@ -49,8 +50,12 @@ class TransactionHistoryController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        // dd($transaction);
-        return view("transactions.show");
+        $authUser =  Auth::user()->load("wallet");
+        if (Gate::denies("show-transaction-history", $transaction)) abort(403);
+
+        $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
+            $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
+        return view("transactions.show", compact("transaction"));
     }
 
     /**
