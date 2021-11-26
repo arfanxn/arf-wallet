@@ -22,7 +22,7 @@ class CreateTransactionsTable extends Migration
             );
             $table->foreignId("from_wallet_id")->constrained("wallets", "id");
             // $table->foreignId("to_user_id")->constrained("users", "id");
-            $table->foreignId("to_wallet_id")->nullable()->constrained("wallets", "id");
+            $table->foreignId("to_wallet_id")->constrained("wallets", "id");
             $table->unsignedBigInteger("amount");
             $table->unsignedInteger("charge")->default(0);
             $table->string("description", 1000)->nullable();
