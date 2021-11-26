@@ -24,3 +24,13 @@ if (!function_exists("toCurrency")) {
         return $money;
     }
 }
+
+if (!function_exists("stringCensor")) {
+    function stringCensor($string)
+    {
+        $length = strlen($string) - floor(strlen($string) / 2);
+        $start = floor($length / 2);
+        $replacement = str_repeat('*', $length);
+        return substr_replace($string, $replacement, $start, $length);
+    }
+}
