@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Transactions;
 
+use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
-class TransactionHistoryController extends Controller
+class SendMoneyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +15,7 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-        $transactions = Auth::user()->wallet->allTransactions()
-            ->orderBy("created_at", "desc")->get();
-        return view("transactions.index", compact("transactions"));
+        //
     }
 
     /**
@@ -28,7 +25,7 @@ class TransactionHistoryController extends Controller
      */
     public function create()
     {
-        //
+        return view("transactions.send-money",);
     }
 
     /**
@@ -50,12 +47,7 @@ class TransactionHistoryController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        $authUser =  Auth::user()->load("wallet");
-        if (Gate::denies("show-transaction-history", $transaction)) abort(403);
-
-        $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
-            $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
-        return view("transactions.show", compact("transaction"));
+        //
     }
 
     /**

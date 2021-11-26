@@ -44,7 +44,13 @@
                         </div>
                     @endif
                 </div>
-                <div class="mt-3 pb-2">
+                @if ($transaction->description)
+                    <div class="mt-3 border-bottom border-secondary ">
+                        <h6 class="fw-bold">Deskripsi</h6>
+                        <p>{{ $transaction->description }}</p>
+                    </div>
+                @endif
+                <div class="mt-3 pb-5">
                     @if ($authWallet->id == $transaction->from_wallet_id)
                         <h6 class="fw-bold">Detail Penerima</h6>
                         <div class="d-flex justify-content-between">

@@ -4,7 +4,8 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TransactionHistoryController;
+use App\Http\Controllers\Transactions\SendMoneyController;
+use App\Http\Controllers\Transactions\TransactionHistoryController;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
@@ -58,6 +59,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/', [HomeController::class, "index"])->name("home");
 
     Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
+        Route::get("send-money", ["uses" => SendMoneyController::class  . "@create", "as" => "send-money"]);
         Route::get("history", [
             "uses" => TransactionHistoryController::class .  "@index", "as" => "history"
         ]);

@@ -13,8 +13,8 @@
                     <p class="d-inline fw-bold fs-5">ARF-WALLET</p>
                 </div>
                 <div class="mt-3 d-flex justify-content-between">
-                    <h5>Muhammad Arfan</h5>
-                    <h5>0888 XXXX XXXX</h5>
+                    <h5>{{ ucwords(Auth::user()->name) }}</h5>
+                    <h5>{{ stringCensor($authWallet->address) }}</h5>
                 </div>
                 <div class="">
                     <a href="" class="float-end badge bg-primary text-decoration-none text-white fs-6 mt-1">+ TOP UP</a>

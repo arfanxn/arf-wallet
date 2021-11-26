@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="">
-            <a class="text-decoration-none text-dark" href="">
+            <a class="text-decoration-none text-dark" href="{{ route('transaction.send-money') }}">
                 <x-icon.send-money></x-icon.send-money>
                 <p>Kirim</p>
             </a>
