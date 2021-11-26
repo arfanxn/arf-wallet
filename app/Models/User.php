@@ -29,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
         "last_seen",
     ];
 
+    // protected $with = ["wallet"];
+
     /**
      * The attributes that should be hidden for serialization.
      *
