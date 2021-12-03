@@ -59,7 +59,8 @@ Route::middleware("auth")->group(function () {
     Route::get('/', [HomeController::class, "index"])->name("home");
 
     Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
-        Route::get("send-money", ["uses" => SendMoneyController::class  . "@create", "as" => "send-money"]);
+        Route::get("send-money", ["uses" => SendMoneyController::class  . "@index", "as" => "send-money"]);
+        Route::get("send-money/to/{address}", ["uses" => SendMoneyController::class . "@create", "as" =>  "send-money-to"]);
         Route::get("history", [
             "uses" => TransactionHistoryController::class .  "@index", "as" => "history"
         ]);
@@ -90,7 +91,10 @@ Route::middleware("auth")->group(function () {
 
 
 
-
+// Test Recent Transfer Wallets
+Route::get("recent-wallets", function () {
+    dd(Transaction::where("from_wallet_id", 1)->get()->unique("to_wallet_id"));
+});
 
 
 // TEST TRANSFER 

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
+use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 
 class SendMoneyController extends Controller
 {
@@ -15,7 +18,8 @@ class SendMoneyController extends Controller
      */
     public function index()
     {
-        //
+        $recentWallets = (Auth::user())->recentTransferedWallets();
+        return view("transactions.send-money", compact("recentWallets"));
     }
 
     /**
@@ -23,9 +27,11 @@ class SendMoneyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request,  $address)
     {
-        return view("transactions.send-money",);
+        $address = Crypt::decryptString($address);
+        $toWallet = Wallet::with("owner")->where("address", $address)->first();
+        return view("transactions.send-money-to", compact("toWallet"));
     }
 
     /**
