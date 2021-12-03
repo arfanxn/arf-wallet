@@ -62,9 +62,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function recentTransferedWallets()
     {
-        $transferedTransactions = ($this->load(["wallet.transferedTransactions.toWallet.owner"]))->wallet->transferedTransactions;
-        $transferedTransactions = $transferedTransactions;
-        dd($transferedTransactions);
+        $transferedTransactions = ($this->load([
+            "wallet.transferedTransactions" => function ($query) {
+                return $query->orderBy("created_at", "desc");
+            }
+        ]))->wallet->transferedTransactions->unique("to_wallet_id");
+        $transferedTransactions = $transferedTransactions->load("toWallet.owner");
         $recentWallets = [];
         foreach ($transferedTransactions as  $transferedTransaction) {
             array_push($recentWallets, $transferedTransaction->toWallet);
