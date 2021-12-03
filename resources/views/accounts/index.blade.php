@@ -6,8 +6,7 @@
 
     <header class="d-flex justify-content-start bg-primary text-white pb-2 ">
         <div class="px-3">
-            <img class=" rounded-circle border border-white border-2"
-                src="{{ asset('accounts/profile_picture/arfan.jpg') }}" width="55" height="55">
+            <x-profile-picture />
         </div>
         <div class="">
             <h6 class="my-1 fw-bold">{{ strtoupper(auth()->user()->name) }}</h6>
