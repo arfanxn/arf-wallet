@@ -1,20 +1,11 @@
 <x-app-layout title="Detail Transaksi" :navbar-top="false" :navbar-bottom="false">
 
-    <x-slot name="styles">
-        <style>
-            .invoice-bg {
-                width: 95%;
-            }
-
-        </style>
-    </x-slot>
-
     <x-transaction-header route="{{ route('transaction.history') }}" class="h-25">
         Detail Transaksi
     </x-transaction-header>
 
     <div class="position-absolute col-4 mt-5" style="z-index: 99999">
-        <div class="invoice-bg bg-white mx-auto rounded px-0">
+        <div class="bg-white mx-auto rounded px-0" style="width: 95%;">
             <div class="px-2 pb-5">
                 <div class="text-center py-3 ">
                     <x-icon.wallet withBrand="true" />
