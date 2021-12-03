@@ -27,8 +27,8 @@ class ViewServiceProvider extends ServiceProvider
     {
         //  VIEW COMPOSER AUTH WALLET 
         View::composer([
-            "components.navbar-top", "home", "transactions.index",
-            "transactions.show", "accounts.index", "components.modal.wallet-info"
+            "components.navbar-top", "home", "transactions.histories",
+            "transactions.detail", "accounts.index", "components.modal.wallet-info"
         ], function ($view) {
             $view->with("authWallet", Auth::user()->wallet);
         });

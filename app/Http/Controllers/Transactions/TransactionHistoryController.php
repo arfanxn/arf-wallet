@@ -19,7 +19,7 @@ class TransactionHistoryController extends Controller
     {
         $transactions = Auth::user()->wallet->allTransactions()
             ->orderBy("created_at", "desc")->get();
-        return view("transactions.index", compact("transactions"));
+        return view("transactions.histories", compact("transactions"));
     }
 
     /**
@@ -56,7 +56,7 @@ class TransactionHistoryController extends Controller
 
         $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
             $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
-        return view("transactions.show", compact("transaction"));
+        return view("transactions.detail", compact("transaction"));
     }
 
     /**
