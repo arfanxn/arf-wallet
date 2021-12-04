@@ -87,10 +87,6 @@ Route::middleware("auth")->group(function () {
 
 
 
-
-
-
-
 // Test Recent Transfer Wallets
 Route::get("recent-wallets", function () {
     dd(Transaction::where("from_wallet_id", 1)->get()->unique("to_wallet_id"));
