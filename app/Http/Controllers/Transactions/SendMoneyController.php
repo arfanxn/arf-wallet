@@ -31,7 +31,8 @@ class SendMoneyController extends Controller
     {
         $address = Crypt::decryptString($address);
         $toWallet = Wallet::with("owner")->where("address", $address)->first();
-        return view("transactions.send-money-to", compact("toWallet"));
+        $lastTransaction = Transaction::getLastTransactionTo($toWallet);
+        return view("transactions.send-money-to", compact("toWallet", "lastTransaction"));
     }
 
     /**

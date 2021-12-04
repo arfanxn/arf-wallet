@@ -33,6 +33,10 @@
 
             </div>
 
+            <div class="w-100 py-2 alert-secondary px-3">
+                <span>Transaksi Terakhir : {{ $lastTransaction->created_at->format('j F Y') }}</span>
+            </div>
+
 
         </div>
     </div>
