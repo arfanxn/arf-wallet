@@ -22,14 +22,14 @@ class Transaction extends Model
         "status"
     ];
 
-    public static function getLastTransactionTo($walletOrId)
+    public static function getLastTransactionTo($wallet_or_walletId)
     {
-        if ($walletOrId instanceof Wallet) {
-            $walletOrId = $walletOrId->id;
-        }
+        if ($wallet_or_walletId instanceof Wallet)
+            $wallet_or_walletId = $wallet_or_walletId->id;
+
         $lastTransaction = static::where("from_wallet_id", (Auth::user())->wallet->id)
-            ->where("to_wallet_id", $walletOrId)->orderBy("created_at", "desc")->first();
-        return $lastTransaction;
+            ->where("to_wallet_id", $wallet_or_walletId)->orderBy("created_at", "desc")->first();
+        return $lastTransaction ?? null;
     }
 
     public function toWallet()
