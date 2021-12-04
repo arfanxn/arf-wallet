@@ -34,3 +34,21 @@ if (!function_exists("stringCensor")) {
         return substr_replace($string, $replacement, $start, $length);
     }
 }
+
+if (!function_exists("decryptAndCatch")) {
+    function decryptAndCatch(
+        string $encryptedStringToDecrypt,
+        $catchCallback = null,
+    ) {
+        try {
+            $decrypted = \Illuminate\Support\Facades\Crypt::decryptString($encryptedStringToDecrypt);
+            if (!$decrypted) throw new \Illuminate\Contracts\Encryption\DecryptException();
+
+            return $decrypted;
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            return $catchCallback ? $catchCallback($e)
+                // Show the error message if not production 
+                : (env("APP_ENV") != "production" ? dd($e->getMessage()) : null);
+        }
+    }
+}
