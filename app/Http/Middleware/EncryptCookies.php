@@ -12,6 +12,13 @@ class EncryptCookies extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // 'XSRF-TOKEN',
     ];
+
+    // protected function decryptCookie($name, $cookie)
+    // {
+    //     return is_array($cookie)
+    //         ? $this->decryptArray($cookie)
+    //         : $this->encrypter->decrypt(urldecode($cookie), static::serialized($name));
+    // }
 }
