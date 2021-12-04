@@ -17,25 +17,40 @@
 
             </div>
 
-            <div class="pt-3">
-                <h6 class="fw-bold text-secondary mb-3">Jumlah Kirim</h6>
+            <div class="pt-2">
+                <label for="input-amount" class="fw-bold text-secondary mb-2">Jumlah Kirim</label>
                 <div class="input-group mb-3">
                     <span class="input-group-text bg-white" id="basic-addon1">Rp</span>
                     <input type="number" class="form-control bg-white border-0 border-end border-bottom border-top"
-                        placeholder="0" aria-describedby="basic-addon1">
+                        placeholder="0" id="input-amount">
                 </div>
 
-                <div class="mb-3">
+                <div>
                     <textarea class="form-control bg-white"
-                        placeholder="Catatan transaksi : &#8220Untuk makan siang!&#148" rows="
+                        placeholder="Catatan transaksi : &#8220Untuk makan malam!&#148" rows="
                         3"></textarea>
                 </div>
 
             </div>
 
-            <div class="w-100 py-2 alert-secondary px-3">
-                <span>Transaksi Terakhir : {{ $lastTransaction->created_at->format('j F Y') }}</span>
-            </div>
+            @isset($lastTransactionTo)
+                <div class="w-100 py-2 alert-secondary px-3 mt-3">
+                    <span>Transaksi Terakhir : {{ $lastTransactionTo->created_at->format('j F Y') }}</span>
+                </div>
+            @endisset
+
+            <footer
+                class="fixed-bottom offset-md-4 col-12 col-md-4 d-flex justify-content-between  rounded-top bg-light border-top border-dark pt-1 px-2">
+                <div class="d-flex">
+                    <x-icon.wallet class="me-2"></x-icon.wallet>
+                    <div class="">
+                        <small class="fw-bold">Saldo</small>
+                        <h6>{{ toIDR($authWallet->balance) }}</h6>
+                    </div>
+                </div>
+                <div class="my-auto"><button class="btn btn-secondary px-4">Kirim</button></div>
+            </footer>
+
 
 
         </div>

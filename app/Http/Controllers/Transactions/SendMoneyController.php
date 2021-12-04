@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Crypt;
+
 
 class SendMoneyController extends Controller
 {
@@ -29,10 +29,11 @@ class SendMoneyController extends Controller
      */
     public function create(Request $request,  $address)
     {
-        $address = Crypt::decryptString($address);
+        $address = decryptAndCatch($address, fn () => abort(404));
+
         $toWallet = Wallet::with("owner")->where("address", $address)->first();
-        $lastTransaction = Transaction::getLastTransactionTo($toWallet);
-        return view("transactions.send-money-to", compact("toWallet", "lastTransaction"));
+        $lastTransactionTo = Transaction::getLastTransactionTo($toWallet);
+        return view("transactions.send-money-to", compact("toWallet", "lastTransactionTo"));
     }
 
     /**
@@ -41,9 +42,12 @@ class SendMoneyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $address)
     {
-        //
+        $request->validate(
+            ""
+        );
+        $address = decryptAndCatch($address, fn () => abort(404));
     }
 
     /**
