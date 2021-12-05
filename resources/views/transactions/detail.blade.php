@@ -5,11 +5,17 @@
     </x-transaction-header>
 
     <div class="position-absolute col-4 mt-5" style="z-index: 99999">
-        <div class="bg-white mx-auto rounded px-0" style="width: 95%;">
-            <div class="px-2 pb-5">
+        <div class="bg-white mx-auto rounded px-0 " style="width: 95%;">
+            <div class="px-2 pb-5 ">
                 <div class="text-center py-3 ">
                     <x-icon.wallet withBrand="true" />
                 </div>
+                @if (session()->has('success'))
+                    <div class="alert alert-success  alert-dismissible fade show py-0 mt-2">
+                        <span>{{ session('success') }}</span>
+                        <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="d-flex justify-content-between pb-1 border-bottom border-secondary">
                     <small>{{ $transaction->created_at }}</small>
                     <small>Address: {{ stringCensor($authWallet->address) }}</small>
@@ -36,7 +42,7 @@
                     @endif
                 </div>
                 @if ($transaction->description)
-                    <div class="mt-3 border-bottom border-secondary ">
+                    <div class="mt-3 border-bottom border-secondary overflow-auto " style="max-height: 150px">
                         <h6 class="fw-bold">Deskripsi</h6>
                         <p>{{ $transaction->description }}</p>
                     </div>
