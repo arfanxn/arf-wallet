@@ -18,12 +18,12 @@ trait WalletTransferMethodTrait
     ) {
         DB::beginTransaction();
         try {
-            if ($amount < 10000) return throw new WalletException("Minimal transfer adalah 10.000");
+            if ($amount < 10000) throw new WalletException("Minimal transfer adalah 10.000");
 
             $fromWallet = Auth::user()->wallet()
                 ->where("balance", ">=", ($amount + $charge));
 
-            !$fromWallet ? throw new WalletException("Saldo Wallet kamu tidak cukup!")
+            !$fromWallet->exists() ? throw new WalletException("Saldo Wallet kamu tidak cukup!")
                 : $fromWallet->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
 
             // if the user send to the same wallet, let say wallet-id-1 send to wallet-id-1 ,throw an error.
@@ -49,14 +49,19 @@ trait WalletTransferMethodTrait
 
             DB::commit();
 
-            return true;
+            return response()->json([
+                "success" =>  true, "message" => "success",
+                "tx_hash" => $tx_hash,
+            ]);
         } catch (WalletException $e) {
             DB::rollBack();
-            return $e->getMessage();
+            return $e->report();
 
             // dd($e->report());
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
+
+
             return $e->getMessage();
 
 
