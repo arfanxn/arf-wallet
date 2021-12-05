@@ -60,7 +60,11 @@ Route::middleware("auth")->group(function () {
 
     Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
         Route::get("send-money", ["uses" => SendMoneyController::class  . "@index", "as" => "send-money"]);
-        Route::get("send-money/to/{address}", ["uses" => SendMoneyController::class . "@create", "as" =>  "send-money-to"]);
+        Route::get("send-money/to/{address}", ["uses" => SendMoneyController::class . "@create", "as" =>  "send-money.create"]);
+        Route::post("send-money/to/{address}", [
+            "uses" => SendMoneyController::class . "@store",
+            "as" => "send-money.store"
+        ]);
         Route::get("history", [
             "uses" => TransactionHistoryController::class .  "@index", "as" => "history"
         ]);
