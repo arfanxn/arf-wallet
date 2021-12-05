@@ -26,6 +26,7 @@ trait WalletTransferMethodTrait
             !$fromWallet ? throw new WalletException("Saldo Wallet kamu tidak cukup!")
                 : $fromWallet->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
 
+            // if the user send to the same wallet, let say wallet-id-1 send to wallet-id-1 ,throw an error.
             if ($address == $fromWallet->first()->address)
                 throw new WalletException("Tidak dapat mengirim ke Wallet yang sama!");
 
@@ -47,12 +48,19 @@ trait WalletTransferMethodTrait
             ]);
 
             DB::commit();
+
+            return true;
         } catch (WalletException $e) {
             DB::rollBack();
-            dd($e->report());
+            return $e->getMessage();
+
+            // dd($e->report());
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
-            dd($e->getMessage());
+            return $e->getMessage();
+
+
+            // dd($e->getMessage());
         }
     }
 }
