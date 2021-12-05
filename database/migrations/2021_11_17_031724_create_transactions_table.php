@@ -25,7 +25,7 @@ class CreateTransactionsTable extends Migration
             $table->foreignId("to_wallet_id")->constrained("wallets", "id");
             $table->unsignedBigInteger("amount");
             $table->unsignedInteger("charge")->default(0);
-            $table->string("description", 1000)->nullable();
+            $table->string("description", 255)->nullable();
             $table->boolean("status");
             $table->timestamps();
         });
