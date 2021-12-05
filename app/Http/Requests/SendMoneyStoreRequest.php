@@ -24,7 +24,8 @@ class SendMoneyStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            "amount" => ["required", "numeric", "min:10000"], "description" => ["nullable", "string"],
+            "amount" => ["required", "numeric", "min:10000"],
+            "description" => ["nullable", "string", "max:250"],
         ];
     }
 
