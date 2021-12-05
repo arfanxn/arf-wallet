@@ -13,3 +13,10 @@ function pascalCase(string) {
     });
     return aa.replace(aa.charAt(0), aa[0].toUpperCase());
 };
+
+function triggerElements(elementID_or_Class) {
+    let arrayOfElement = document.querySelectorAll(elementID_or_Class);
+    arrayOfElement.forEach(element => {
+        element.click();
+    });
+}
