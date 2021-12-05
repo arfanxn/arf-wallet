@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SendMoneyStoreRequest;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
@@ -29,11 +30,17 @@ class SendMoneyController extends Controller
      */
     public function create(Request $request,  $address)
     {
+        $encryptedWalletAddress = $address;
         $address = decryptAndCatch($address, fn () => abort(404));
 
         $toWallet = Wallet::with("owner")->where("address", $address)->first();
+        if (!$toWallet) return abort(404);
+
         $lastTransactionTo = Transaction::getLastTransactionTo($toWallet);
-        return view("transactions.send-money-to", compact("toWallet", "lastTransactionTo"));
+        return view(
+            "transactions.send-money-to",
+            compact("toWallet", "lastTransactionTo", "encryptedWalletAddress")
+        );
     }
 
     /**
@@ -42,12 +49,16 @@ class SendMoneyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $address)
+    public function store(SendMoneyStoreRequest $request, $address)
     {
-        $request->validate(
-            ""
-        );
         $address = decryptAndCatch($address, fn () => abort(404));
+
+        $charge = $request->charge ?? 0;
+        $walletTransaction = Wallet::transfer($address, $request->amount, $charge, $request->description ?? "");
+
+        return isset($walletTransaction->original["success"]) ?
+            redirect()->to(route("transaction.detail", $walletTransaction->original["tx_hash"]))->with(["success" => "Transaksi Berhasil"])
+            : back()->with(["error" => $walletTransaction->original["message"] ?? $walletTransaction->message ?? $walletTransaction ?? "Error Occured"]);
     }
 
     /**
