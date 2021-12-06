@@ -60,6 +60,10 @@
   --bs-body-bg: #f8fafc;
 }
 
+/* 
+ADD BY ME (ARFAN'S)  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+*/
+
 .scrollbar-none {
     background-color: #eee;
     width: 200px;
@@ -85,6 +89,10 @@
     scrollbar-width: none;
     /* Firefox */
 }
+
+/* 
+ADD BY ME (ARFAN'S) ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*/
 
 *,
 *::before,

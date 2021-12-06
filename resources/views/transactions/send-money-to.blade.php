@@ -56,11 +56,11 @@
                 <button class="d-none" id="btnSendMoney" type="submit">Kirim</button>
             </form>
 
-            @isset($lastTransactionTo)
+            @if ($lastTransactionTo)
                 <div class="w-100 py-2 alert-secondary px-3 mt-3">
                     <span>Transaksi Terakhir : {{ $lastTransactionTo->created_at->format('j F Y') }}</span>
                 </div>
-            @endisset
+            @endif
 
             <footer
                 class="fixed-bottom offset-md-4 col-12 col-md-4 d-flex justify-content-between  rounded-top bg-light border-top border-dark pt-1 px-2">
