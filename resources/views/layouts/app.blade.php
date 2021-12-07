@@ -16,7 +16,7 @@
 
 </head>
 
-<body class="bg-dark overflow-hidden">
+<body class=" overflow-hidden" style="background-color: #000">
 
     <main class="row m-auto">
         <div class="offset-md-4 col-md-4 col-12 p-0 bg-light overflow-auto scrollbar-none"
@@ -35,7 +35,8 @@
 
     {{-- pooperJs and jQuery --}}
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/helper.js') }}"></script>
+    <script src="{{ asset('js/helpers.js') }}"></script>
+
 
     {!! $scripts ?? '' !!}
 </body>
