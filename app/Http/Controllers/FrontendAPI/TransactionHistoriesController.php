@@ -11,22 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionHistoriesController extends Controller
 {
-    public function oldest()
-    {
-        $transactions = Auth::user()->wallet->allTransactions()
-            ->orderBy("created_at", "asc")->get();
-
-        return TransactionResource::collection($transactions);
-    }
-
-    public function newest()
-    {
-        $transactions = Auth::user()->wallet->allTransactions()
-            ->orderBy("created_at", "desc")->get();
-
-        return TransactionResource::collection($transactions);
-    }
-
     public function newestToday()
     {
         // 
@@ -34,7 +18,6 @@ class TransactionHistoriesController extends Controller
 
     public function oldestToday()
     {
-        
     }
 
     /**
