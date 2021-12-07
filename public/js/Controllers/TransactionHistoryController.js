@@ -14,7 +14,6 @@ class TransactionHistoryController {
         for (let i = this.transactions.length; i > 0; i--) {
             reversed.push(this.transactions[i - 1]);
         }
-
         this.print(reversed);
         return this;
     }
@@ -34,22 +33,20 @@ class TransactionHistoryController {
         this.transactionWrapper.innerHTML = "";
 
         // let html = `<div class="py-5 my-5 w-100" style="height : 700px"></div>`;
-        let html = "";
         transactions.forEach(elem => {
             let transactionData = JSON.parse(elem.getAttribute("data-transaction"));
-            html += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
+            this.transactionWrapper.innerHTML += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
                 class="transaction d-flex justify-content-between py-3 border-bottom border-secondary mx-3 text-decoration-none text-dark">
                 <div class="my-auto">
                     <span class="d-block">
                         ${this.authWalletID == transactionData.from_wallet_id ? 'Kirim Uang' : 'Terima Uang' }</span>
-                    <small>${transactionData.created_at}</small>
+                    <small>${Laravel.toDateTimeString(transactionData.created_at)}</small>
                 </div>
                 <div class="my-auto">
                     <span class="align-middle">${toIDR(transactionData.amount)}</span>
                 </div>
             </a>`
         });
-        this.transactionWrapper.innerHTML = html;
 
         return this;
     }
