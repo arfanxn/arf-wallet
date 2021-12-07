@@ -17,12 +17,13 @@ class TransactionResource extends JsonResource
         return [
             "id" => $this->id,
             "tx_hash" => $this->tx_hash,
+            "from_wallet_id" => $this->from_wallet_id,
+            "to_wallet_id" => $this->to_wallet_id,
             "from_wallet" => new WalletResource($this->whenLoaded("fromWallet")),
             "to_wallet" => new WalletResource($this->whenLoaded("toWallet")),
             "amount" => $this->amount,
             "charge" => $this->charge,
             "description" => $this->description,
-            "status" => $this->status,
             "created_at" => $this->created_at,
         ];
     }

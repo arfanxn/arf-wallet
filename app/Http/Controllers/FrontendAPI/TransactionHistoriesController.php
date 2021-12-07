@@ -3,11 +3,40 @@
 namespace App\Http\Controllers\FrontendAPI;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TransactionResource;
+use App\Http\Resources\WalletResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionHistoriesController extends Controller
 {
+    public function oldest()
+    {
+        $transactions = Auth::user()->wallet->allTransactions()
+            ->orderBy("created_at", "asc")->get();
+
+        return TransactionResource::collection($transactions);
+    }
+
+    public function newest()
+    {
+        $transactions = Auth::user()->wallet->allTransactions()
+            ->orderBy("created_at", "desc")->get();
+
+        return TransactionResource::collection($transactions);
+    }
+
+    public function newestToday()
+    {
+        // 
+    }
+
+    public function oldestToday()
+    {
+        
+    }
+
     /**
      * Display a listing of the resource.
      *
