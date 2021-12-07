@@ -9,9 +9,6 @@ btnModal.forEach((elem, index) => {
 
 // const laravelCSRF = document.querySelector(`meta[name="csrf-token"]`).content;
 
-function laravelCSRF() {
-    return document.querySelector(`meta[name="csrf-token"]`).content;
-}
 
 function toIDR(number) {
     return "Rp" + new Intl.NumberFormat(['ban', 'id']).format(number);
