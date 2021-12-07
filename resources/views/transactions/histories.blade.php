@@ -4,20 +4,7 @@
         Riwayat Transaksi
     </x-transaction-header>
 
-    <div class="w-100 py-5">
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="transactions-sorting" id="radioNewest" checked
-                value="newest">
-            <label class="form-check-label" for="radioNewest">Terbaru</label>
-
-        </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="transactions-sorting" id="radioOldest" value="oldest">
-            <label class="form-check-label" for="radioOldest">Terlama</label>
-        </div>
-    </div>
-
-    <main id="transactionListsWrapper" class="bg-light  overflow-auto">
+    <main id="transactionListsWrapper" class="bg-light mt-3 pt-3  overflow-auto">
         @foreach ($transactions as $transaction)
             <a href="{{ route('transaction.detail', $transaction->tx_hash) }}" data-transaction="{{ $transaction }}"
                 data-authWallet="{{ $authWallet }}"
@@ -34,15 +21,24 @@
         @endforeach
     </main>
 
-    <div class="py-5 my-5 w-100" style="height: 600px"></div>
+    <div class="py-5 my-5 w-100" style="height: 400px"></div> --}}
     <footer
-        class="bg-white fixed-bottom  offset-md-4 col-12 col-md-4 text-center py-1 px-2 d-flex justify-content-around">
-        <div class="cursor-pointer" onclick="triggerElements('#triggerModalTransactionSorting')">
-            <h6 class="align-middle">
-                <x-icon.sorting-order /> Urutkan
-            </h6>
+        class="bg-white fixed-bottom  offset-md-4 col-12 col-md-4 text-center py-1 px-2 d-flex justify-content-evenly">
+        <div class="cursor-pointer">
+            <x-icon.sorting-order />
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="transactions-sorting" id="radioNewest" checked
+                    value="newest">
+                <label class="form-check-label" for="radioNewest">Terbaru</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="transactions-sorting" id="radioOldest"
+                    value="oldest">
+                <label class="form-check-label" for="radioOldest">Terlama</label>
+            </div>
         </div>
-        <div>
+
+        <div class="cursor-pointer">
             <h6 class="align-middle">
                 <x-icon.filter /> Filter
             </h6>
@@ -50,9 +46,8 @@
 
     </footer>
 
-    <x-modal.transaction-sorting />
+    {{-- <x-modal.transaction-sorting /> --}}
     <x-slot name="scripts">
-        <script src="{{ asset('js/transactions/sorting.js') }}"></script>
         <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script>
     </x-slot>
 
