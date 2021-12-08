@@ -21,8 +21,16 @@ function pascalCase(string) {
     return aa.replace(aa.charAt(0), aa[0].toUpperCase());
 };
 
-function triggerElements(elementID_or_Class) {
+function triggerElements(elementID_or_Class, callback = null) { // return void
     let arrayOfElement = document.querySelectorAll(elementID_or_Class);
+
+    if (typeof callback == "function") {
+        arrayOfElement.forEach(elem => {
+            callback(elem);
+        });
+        return;
+    }
+
     arrayOfElement.forEach(element => {
         element.click();
     });
