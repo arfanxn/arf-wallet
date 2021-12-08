@@ -4,9 +4,12 @@ class TransactionHistoryController {
             return TransactionHistoryController._instance
         TransactionHistoryController._instance = this;
 
+        this.filterDate = "all";
+        this.filterType = "all";
+
         this.transactionWrapper = document.querySelector("#transactionListsWrapper");
         this.transactions = document.querySelectorAll(".transaction");
-        this.authWalletID = 1;
+        this.authWalletID = this.transactionWrapper.getAttribute('data-authWallet')
     }
 
     sortByOldest() {
@@ -25,14 +28,9 @@ class TransactionHistoryController {
 
     print(transactions) {
         // transactions = transactions ? transactions : this.transactions;
-        // console.log(transactions);
-        // transactions.forEach(elem => {
-        //     console.log(elem);
-        // });
-        // return;
+
         this.transactionWrapper.innerHTML = "";
 
-        // let html = `<div class="py-5 my-5 w-100" style="height : 700px"></div>`;
         transactions.forEach(elem => {
             let transactionData = JSON.parse(elem.getAttribute("data-transaction"));
             this.transactionWrapper.innerHTML += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
@@ -48,6 +46,10 @@ class TransactionHistoryController {
             </a>`
         });
 
+        return this;
+    }
+
+    dateThisMonthAndTypeSendMoney() {
         return this;
     }
 }
@@ -70,4 +72,43 @@ radioBtnSorting.forEach((elem) => {
         if (elem.value == "newest") return (new TransactionHistoryController)
             .sortByNewest();
     })
+});
+
+
+
+const modalTransactionFilter = document.getElementById("modalTransactionFilter");
+const btnCloseModalTransactionFilter = document.getElementById("btnCloseModalTransactionFilter");
+btnCloseModalTransactionFilter.addEventListener("click", () => {
+    modalTransactionFilter.classList.add("d-none");
+});
+
+const btnShowFilteredTransactions = document.getElementById("btnShowFilteredTransactions");
+btnShowFilteredTransactions.addEventListener("click", () => {
+
+    let filterSettings = {
+        "type": "",
+        "date": "",
+    };
+
+    let transactionsFilterDate = document.getElementsByName('transactions-filter-date');
+    transactionsFilterDate.forEach(elem => {
+        if (elem.checked) {
+            filterSettings["date"] = elem.value;
+        }
+    });
+
+    let transactionsFilterType = document.getElementsByName('transactions-filter-type');
+    transactionsFilterType.forEach(elem => {
+        if (elem.checked) {
+            filterSettings["type"] = elem.value;
+        }
+    });
+
+    if (filterSettings['date'] == 'this-month' && filterSettings["type"] == "send-money") {
+        (new TransactionHistoryController).dateThisMonthAndTypeSendMoney();
+    }
+
+
+
+    modalTransactionFilter.classList.add("d-none");
 });

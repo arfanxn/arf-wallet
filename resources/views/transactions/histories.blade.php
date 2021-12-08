@@ -4,10 +4,11 @@
         Riwayat Transaksi
     </x-transaction-header>
 
-    <main id="transactionListsWrapper" class="bg-light mt-3 pt-3  overflow-auto">
+
+    <main id="transactionListsWrapper" class="bg-light mt-3 pt-3  overflow-auto"
+        data-authWallet="{{ $authWallet->only('user_id')['user_id'] }}">
         @foreach ($transactions as $transaction)
             <a href="{{ route('transaction.detail', $transaction->tx_hash) }}" data-transaction="{{ $transaction }}"
-                data-authWallet="{{ $authWallet }}"
                 class="transaction  d-flex justify-content-between py-3 border-bottom border-secondary mx-3 text-decoration-none text-dark">
                 <div class="my-auto">
                     <span class="d-block">
@@ -38,7 +39,8 @@
             </div>
         </div>
 
-        <div class="cursor-pointer">
+        <div onclick="triggerElements(`#modalTransactionFilter` , (el) => {el.classList.remove(`d-none`)})"
+            class="cursor-pointer">
             <h6 class="align-middle">
                 <x-icon.filter /> Filter
             </h6>
@@ -46,7 +48,7 @@
 
     </footer>
 
-    {{-- <x-modal.transaction-sorting /> --}}
+    <x-modal.transaction-filter />
     <x-slot name="scripts">
         <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script>
     </x-slot>
