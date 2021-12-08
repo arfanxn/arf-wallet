@@ -9,7 +9,6 @@ btnModal.forEach((elem, index) => {
 
 // const laravelCSRF = document.querySelector(`meta[name="csrf-token"]`).content;
 
-
 function toIDR(number) {
     return "Rp" + new Intl.NumberFormat(['ban', 'id']).format(number);
 }
@@ -33,5 +32,21 @@ function triggerElements(elementID_or_Class, callback = null) { // return void
 
     arrayOfElement.forEach(element => {
         element.click();
+    });
+}
+
+function getCheckedRadioBtnValue(elementsName_or_elementObjects, callback = null) {
+    if (typeof elementsName_or_elementObjects == "string") {
+        elementsName_or_elementObjects =
+            document.getElementsByName("elementsName_or_elementObjects");
+    }
+    let elements = elementsName_or_elementObjects;
+
+    if (typeof callback == "function") {
+        return callback(elements);
+    }
+
+    return elements.forEach(elem => {
+        if (elem.checked) return elem.value;
     });
 }
