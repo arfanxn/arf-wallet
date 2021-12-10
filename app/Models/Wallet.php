@@ -24,7 +24,11 @@ class Wallet extends Model
     public function allTransactions()
     {
         $id =  $this->user_id;
-        return Transaction::where("from_wallet_id", $id)->orWhere("to_wallet_id", $id);
+        $transactions = Transaction::where(function ($query) use ($id) {
+            $query->where("from_wallet_id", $id)->orWhere("to_wallet_id", $id);
+        });
+
+        return $transactions;
     }
 
     public function transferedTransactions()
