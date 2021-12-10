@@ -1,4 +1,4 @@
-class TransactionPagination {
+class TransactionPaginator {
     constructor() {
         this.transactionWrapper = document.querySelector("#transactionListsWrapper");
         this.transactions = document.querySelectorAll(".transaction");
@@ -137,16 +137,9 @@ class TransactionPagination {
     }
 }
 
-let transactionPagination = (new TransactionPagination);
+let transactionPaginator = (new TransactionPaginator);
 
 const radioBtnSorting = document.getElementsByName("transactions-sorting");
-radioBtnSorting.forEach(elem => {
-    elem.addEventListener("change", () => {
-        transactionPagination.setSortBy(getCheckedRadioBtnValue(radioBtnSorting))
-            .setPaginateURL().fetchPagination()
-            .then(obj => obj.printPagination().printPaginationButton());
-    });
-});
 
 const btnShowFilteredTransactions = document.getElementById("btnShowFilteredTransactions");
 btnShowFilteredTransactions.addEventListener("click", () => {
@@ -155,7 +148,7 @@ btnShowFilteredTransactions.addEventListener("click", () => {
         transactionType = getCheckedRadioBtnValue("transactions-filter-type"),
         transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
 
-    transactionPagination.setSortBy(sortBy).setTransactionDate(transactionDate)
+    transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
         .setTransactionType(transactionType).setPaginateURL()
         .fetchPagination().then(obj => obj.printPagination().printPaginationButton());
 
@@ -166,9 +159,25 @@ btnShowFilteredTransactions.addEventListener("click", () => {
 const modalTransactionFilter = document.getElementById("modalTransactionFilter");
 const btnCloseModalTransactionFilter = document.getElementById("btnCloseModalTransactionFilter");
 btnCloseModalTransactionFilter.addEventListener("click", () => {
-    clickRadioBtnWhereValueEqualTo(radioBtnSorting, transactionPagination.sortBy);
-    clickRadioBtnWhereValueEqualTo("transactions-filter-type" /*RadioBtnElementName*/ , transactionPagination.transactionType /*VALUE*/ );
-    clickRadioBtnWhereValueEqualTo("transactions-filter-date", transactionPagination.transactionDate);
+    clickRadioBtnWhereValueEqualTo(radioBtnSorting, transactionPaginator.sortBy);
+    clickRadioBtnWhereValueEqualTo("transactions-filter-type" /*RadioBtnElementName*/ , transactionPaginator.transactionType /*VALUE*/ );
+    clickRadioBtnWhereValueEqualTo("transactions-filter-date", transactionPaginator.transactionDate);
 
     modalTransactionFilter.classList.add("d-none");
+});
+
+radioBtnSorting.forEach(elem => {
+    elem.addEventListener("change", () => {
+        const sortBy = getCheckedRadioBtnValue(radioBtnSorting),
+            transactionType = getCheckedRadioBtnValue("transactions-filter-type"),
+            transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
+
+        // transactionPaginator.setSortBy(getCheckedRadioBtnValue(radioBtnSorting))
+        //     .setPaginateURL().fetchPagination()
+        //     .then(obj => obj.printPagination().printPaginationButton());
+
+        transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
+            .setTransactionType(transactionType).setPaginateURL()
+            .fetchPagination().then(obj => obj.printPagination().printPaginationButton());
+    });
 });
