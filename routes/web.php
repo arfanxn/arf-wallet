@@ -68,6 +68,10 @@ Route::middleware("auth")->group(function () {
         Route::get("history", [
             "uses" => TransactionHistoryController::class .  "@index", "as" => "history"
         ]);
+        Route::get("history/filter", [
+            "uses" => TransactionHistoryController::class . "@filter",
+            "as" => "history.filter"
+        ]);
         Route::get("detail/{transaction:tx_hash}", [
             "uses" => TransactionHistoryController::class . "@show", "as" => "detail"
         ]);
