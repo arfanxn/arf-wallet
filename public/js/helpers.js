@@ -38,7 +38,7 @@ function triggerElements(elementID_or_Class, callback = null) { // return void
 function getCheckedRadioBtnValue(elementsName_or_elementObjects, callback = null) {
     if (typeof elementsName_or_elementObjects == "string") {
         elementsName_or_elementObjects =
-            document.getElementsByName("elementsName_or_elementObjects");
+            document.getElementsByName(elementsName_or_elementObjects);
     }
     let elements = elementsName_or_elementObjects;
 
@@ -46,7 +46,43 @@ function getCheckedRadioBtnValue(elementsName_or_elementObjects, callback = null
         return callback(elements);
     }
 
-    return elements.forEach(elem => {
-        if (elem.checked) return elem.value;
+    let checkedValue = "";
+    elements.forEach(elem => {
+        if (elem.checked) checkedValue = elem.value;
+    });
+
+    return checkedValue;
+}
+
+function clickRadioBtnWhereValueEqualTo(elementsName_or_elementObjects, valueShouldCheck) {
+    if (typeof elementsName_or_elementObjects == "string") {
+        elementsName_or_elementObjects =
+            document.getElementsByName(elementsName_or_elementObjects);
+    }
+    let elements = elementsName_or_elementObjects;
+
+    elements.forEach(elem => {
+        if (elem.value == valueShouldCheck) {
+            elem.click();
+            elem.checked = true;
+        } else {
+            elem.checked = false;
+        }
     });
 }
+
+// function setURLparameters(url, objectOfParameters) {
+//     const objKeys = Object.keys(objectOfParameters);
+//     const objLength = objKeys.length;
+
+//     for (let i = 0; i < objLength; i++) {
+//         if (i == 0) {
+//             let regex = new RegExp(`[?|/]+(${objKeys[i]})(=)[a-zA-Z]+`, "ig");
+//             url.replace(regex, `?${objKeys[i]}=${objectOfParameters[objKeys[i]]}`);
+//         } else {
+//             let regex = new RegExp(`[?|/]+(${objKeys[i]})(=)[a-zA-Z]+`, "ig");
+//             url.replace(regex, `&${objKeys[i]}=${objectOfParameters[objKeys[i]]}`);
+//         }
+
+//     }
+// }
