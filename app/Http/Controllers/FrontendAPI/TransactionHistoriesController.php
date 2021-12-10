@@ -11,15 +11,14 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionHistoriesController extends Controller
 {
-    // 
     public function filterByDateAndTransactionType(Request $request)
     {
-        // arf-wallet.test/fe-api/controller?transaction-type=send-money&filter-date=today
-        // dd($request->get("filter-date"), $request->get("transaction-type"));
+        // env(app_url) . /fe-api/controller?transaction-type=send-money&filter-date=today
 
         $transactions = Auth::user()->wallet;
         $transactionType =  $request->get("transaction-type") ?? "all";
-        $filterDate = $request->get("filter-date") ?? "all";
+        $transactionDate = $request->get("transaction-date") ?? "all";
+        $sortBy = $request->get("sortby") ?? "desc";
 
         switch ($transactionType) {
             case "send-money":
@@ -33,7 +32,7 @@ class TransactionHistoriesController extends Controller
                 break;
         }
 
-        switch ($filterDate) {
+        switch ($transactionDate) {
             case "today":
                 $transactions = $transactions->where("created_at", ">=", now()->startOfDay()->toDateTimeString());
                 break;
@@ -58,11 +57,23 @@ class TransactionHistoriesController extends Controller
                 break;
         }
 
+        switch ($sortBy) {
+            case "desc":
+            case "newest":
+                $transactions =  $transactions->orderBy("created_at", "desc");
+                break;
+            case "asc":
+            case "oldest":
+                $transactions = $transactions->orderBy("created_at", "asc");
+                break;
+        }
+
         $transactions =  $transactions->simplePaginate(15);
 
-        $transactions->withPath(url()->current() .
-            "?transaction-type=" .  $transactionType .
-            "&filter-date=" . $filterDate);
+        $transactions->appends([
+            "sortby" => $sortBy,
+            "transaction-date" => $transactionDate, "transaction-type" => $transactionType,
+        ]);
 
         return TransactionResource::collection($transactions);
     }
