@@ -54,7 +54,7 @@
     <x-modal.transaction-filter />
     <x-slot name="scripts">
         {{-- <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script> --}}
-        <script src="{{ asset('js/Transactions/TransactionPagination.js') }}"></script>
+        <script src="{{ asset('js/Transactions/TransactionPaginator.js') }}"></script>
     </x-slot>
 
 </x-app-layout>
