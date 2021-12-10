@@ -21,7 +21,7 @@ Route::get("test", function () {
         ->orWhere("to_wallet_id", 1)->simplePaginate(12);
 });
 
-Route::get("controller", [TransactionHistoriesController::class, "filterByDateAndTransactionType"]);
+Route::post("transaction/history/filter", [TransactionHistoriesController::class, "filterByDateAndTransactionType"]);
 
-Route::post("transactions/sorting/oldest", [TransactionHistoriesController::class, "oldest"]);
-Route::post("transactions/sorting/newest", [TransactionHistoriesController::class, "newest"]);
+// Route::post("transactions/sorting/oldest", [TransactionHistoriesController::class, "oldest"]);
+// Route::post("transactions/sorting/newest", [TransactionHistoriesController::class, "newest"]);
