@@ -22,7 +22,10 @@
         @endforeach
     </main>
 
-    <div class="py-5 my-5 w-100" style="height: 400px"></div> --}}
+    <div class="d-flex justify-content-end mt-3 me-3">
+        {{ $transactions->links('vendor.pagination.transactions-history') }}</div>
+
+    <div class="py-5 my-5 w-100" style="height: 400px"></div>
     <footer
         class="bg-white fixed-bottom  offset-md-4 col-12 col-md-4 text-center py-1 px-2 d-flex justify-content-evenly">
         <div class="cursor-pointer">
@@ -50,7 +53,8 @@
 
     <x-modal.transaction-filter />
     <x-slot name="scripts">
-        <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script>
+        {{-- <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script> --}}
+        <script src="{{ asset('js/Transactions/TransactionPagination.js') }}"></script>
     </x-slot>
 
 </x-app-layout>
