@@ -16,18 +16,18 @@ class TransactionPagination {
     }
 
     setTransactionType(string) {
-        this.filterType = string;
+        this.transactionType = string;
         return this;
     }
 
     setPaginateURL(string = null) {
         if (string == null) {
             const transactionDate = this.hasOwnProperty("transactionDate") ? this.transactionDate : "all",
-                filterType = this.hasOwnProperty("filterType") ? this.filterType : "all",
+                transactionType = this.hasOwnProperty("transactionType") ? this.transactionType : "all",
                 sortBy = this.hasOwnProperty("sortBy") ? this.sortBy : "desc";
 
             const prefix = "/fe-api";
-            let stringURL = `/transaction/history/filter?transaction-type=${filterType}&transaction-date=${transactionDate}&sortby=${sortBy}`;
+            let stringURL = `/transaction/history/filter?transaction-type=${transactionType}&transaction-date=${transactionDate}&sortby=${sortBy}`;
 
             this.fetchPaginateURL = prefix + stringURL + `&page=${this.constructor.getPaginateCurrentPage()}`;
             this.prevPaginateURL = stringURL + `&page=${
@@ -167,7 +167,7 @@ const modalTransactionFilter = document.getElementById("modalTransactionFilter")
 const btnCloseModalTransactionFilter = document.getElementById("btnCloseModalTransactionFilter");
 btnCloseModalTransactionFilter.addEventListener("click", () => {
     clickRadioBtnWhereValueEqualTo(radioBtnSorting, transactionPagination.sortBy);
-    clickRadioBtnWhereValueEqualTo("transactions-filter-type" /*RadioBtnElementName*/ , transactionPagination.filterType /*VALUE*/ );
+    clickRadioBtnWhereValueEqualTo("transactions-filter-type" /*RadioBtnElementName*/ , transactionPagination.transactionType /*VALUE*/ );
     clickRadioBtnWhereValueEqualTo("transactions-filter-date", transactionPagination.transactionDate);
 
     modalTransactionFilter.classList.add("d-none");
