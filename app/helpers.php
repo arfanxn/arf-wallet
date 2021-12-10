@@ -52,3 +52,10 @@ if (!function_exists("decryptAndCatch")) {
         }
     }
 }
+
+if (!function_exists("isFunction")) {
+    function isFunction($callable)
+    {
+        return $callable && !is_string($callable) && !is_array($callable) && is_callable($callable);
+    }
+}
