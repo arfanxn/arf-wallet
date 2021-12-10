@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale($this->app->getLocale());
         Paginator::useBootstrap();
+        // Paginator::defaultSimpleView("");
 
         JsonResource::withoutWrapping();
     }
