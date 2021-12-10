@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Exception;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Carbon;
@@ -20,7 +21,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton("AuthWallet", function () {
-            return Auth::check() ? ((Auth::user())->load("wallet"))->wallet : "Must Login!";
+            return Auth::check() ? ((Auth::user())->load("wallet"))->wallet
+                : throw new Exception("Access Denied - must Login!");
         });
     }
 
