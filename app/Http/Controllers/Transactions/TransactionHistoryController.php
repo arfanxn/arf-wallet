@@ -23,6 +23,22 @@ class TransactionHistoryController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Transaction  $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Transaction $transaction)
+    {
+        $authUser =  Auth::user()->load("wallet");
+        if (Gate::denies("show-transaction-history", $transaction)) abort(403);
+
+        $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
+            $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
+        return view("transactions.detail", compact("transaction"));
+    }
+
+    /**
      * Show filtered transactions .
      *
      * @return \Illuminate\Http\Response
@@ -90,27 +106,11 @@ class TransactionHistoryController extends Controller
             "transaction-date" => $transactionDate, "transaction-type" => $transactionType,
         ]);
 
-        // return dd($transactions->where("created_at", "=", now()->startOfDay()->toDateTimeString())->simplePaginate()->appends([
-        //     "sortby" => $sortBy,
-        //     "date" => $filterDate, "transaction-type" => $transactionType,
-        // ]));
-
+        $request->session()->flashInput([
+            "transactions-sorting" => $sortBy,
+            "transactions-filter-type" => $transactionType,
+            "transactions-filter-date" => $transactionDate,
+        ]);
         return view("transactions.histories", compact("transactions"));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        $authUser =  Auth::user()->load("wallet");
-        if (Gate::denies("show-transaction-history", $transaction)) abort(403);
-
-        $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
-            $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
-        return view("transactions.detail", compact("transaction"));
     }
 }
