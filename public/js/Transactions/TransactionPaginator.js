@@ -20,7 +20,7 @@ class TransactionPaginator {
         return this;
     }
 
-    setPaginateURL(string = null) {
+    setPaginateFetchURL(string = null) {
         if (string == null) {
             const transactionDate = this.hasOwnProperty("transactionDate") ? this.transactionDate : "all",
                 transactionType = this.hasOwnProperty("transactionType") ? this.transactionType : "all",
@@ -28,14 +28,15 @@ class TransactionPaginator {
 
             const prefix = "/fe-api";
             let stringURL = `/transaction/history/filter?transaction-type=${transactionType}&transaction-date=${transactionDate}&sortby=${sortBy}`;
+            let page = `&page=`;
 
-            this.fetchPaginateURL = prefix + stringURL + `&page=${this.constructor.getPaginateCurrentPage()}`;
-            this.prevPaginateURL = stringURL + `&page=${
-                this.constructor.getPaginateCurrentPage() <= 1 ? 1 :(this.constructor.getPaginateCurrentPage() - 1)}`;
-            this.nextPaginateURL = stringURL + `&page=${
-                this.constructor.getPaginateCurrentPage() + 1}`;
+            this.fetchPaginateURL = prefix + stringURL + page + this.constructor.getPaginateCurrentPage();
+            this.prevPaginateURL = stringURL + page +
+                this.constructor.getPaginateCurrentPage() <= 1 ? 1 : (this.constructor.getPaginateCurrentPage() - 1);
+            this.nextPaginateURL = stringURL + page +
+                (this.constructor.getPaginateCurrentPage() + 1);
         } else {
-            this.paginateURL = string;
+            this.fetchPaginateURL = string;
         }
 
         return this;
@@ -62,18 +63,9 @@ class TransactionPaginator {
             callback ? callback(response) :
                 this.fetchedPagination = await response.json();
 
-            console.log(this.fetchedPagination);
         } catch (err) {
             console.log(err);
         }
-        // if (callback == null) {
-        //     fetchedPagination.then((res) => res.json())
-        //         .then(res => this.fetchedPagination = res)
-        //         .then((res) => console.log(res))
-        //         .catch((err) => console.log(err));
-        // } else {
-        //     callback(fetchedPagination);
-        // }
         return this;
     }
 
@@ -102,19 +94,18 @@ class TransactionPaginator {
     }
 
     printPaginationButton() {
-        console.log(this.prevPaginateURL);
-        let prevPaginateURL = document.getElementById("paginatorTransactionPrevURL");
-        if (prevPaginateURL) {
-            console.log(prevPaginateURL);
-            prevPaginateURL.setAttribute("href", this.prevPaginateURL);
-            prevPaginateURL.href = this.prevPaginateURL;
-            console.log(prevPaginateURL);
-        }
+        if (this.fetchedPagination.data.length() >= 1) {
+            let prevPaginateURL = document.getElementById("paginatorTransactionPrevURL");
+            if (prevPaginateURL) {
+                prevPaginateURL.setAttribute("href", this.prevPaginateURL);
+                prevPaginateURL.href = this.prevPaginateURL;
+            }
 
-        let nextPaginateURL = document.getElementById("paginatorTransactionNextURL");
-        if (nextPaginateURL) {
-            nextPaginateURL.setAttribute("href", this.nextPaginateURL);
-            nextPaginateURL.href = this.nextPaginateURL;
+            let nextPaginateURL = document.getElementById("paginatorTransactionNextURL");
+            if (nextPaginateURL) {
+                nextPaginateURL.setAttribute("href", this.nextPaginateURL);
+                nextPaginateURL.href = this.nextPaginateURL;
+            }
         }
 
         return this;
@@ -126,15 +117,15 @@ class TransactionPaginator {
         return typeof currentPage == "number" ? currentPage : 1;
     }
 
-    static getPaginatePrevURL() {
-        const transactionsPaginator = document.getElementById("paginatorTransactionPrevURL");
-        return transactionsPaginator.getAttribute("href");
-    }
+    // static getPaginatePrevURL() {
+    //     const transactionsPaginator = document.getElementById("paginatorTransactionPrevURL");
+    //     return transactionsPaginator.getAttribute("href");
+    // }
 
-    static getPaginateNextURL() {
-        const transactionsPaginator = document.getElementById("paginatorTransactionNextURL");
-        return transactionsPaginator.getAttribute("href");
-    }
+    // static getPaginateNextURL() {
+    //     const transactionsPaginator = document.getElementById("paginatorTransactionNextURL");
+    //     return transactionsPaginator.getAttribute("href");
+    // }
 }
 
 let transactionPaginator = (new TransactionPaginator);
@@ -149,7 +140,7 @@ btnShowFilteredTransactions.addEventListener("click", () => {
         transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
 
     transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
-        .setTransactionType(transactionType).setPaginateURL()
+        .setTransactionType(transactionType).setPaginateFetchURL()
         .fetchPagination().then(obj => obj.printPagination().printPaginationButton());
 
     modalTransactionFilter.classList.add("d-none");
@@ -172,12 +163,8 @@ radioBtnSorting.forEach(elem => {
             transactionType = getCheckedRadioBtnValue("transactions-filter-type"),
             transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
 
-        // transactionPaginator.setSortBy(getCheckedRadioBtnValue(radioBtnSorting))
-        //     .setPaginateURL().fetchPagination()
-        //     .then(obj => obj.printPagination().printPaginationButton());
-
         transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
-            .setTransactionType(transactionType).setPaginateURL()
-            .fetchPagination().then(obj => obj.printPagination().printPaginationButton());
+            .setTransactionType(transactionType).setPaginateFetchURL()
+            .fetchPagination().then(tscpag => tscpag.printPagination().printPaginationButton());
     });
 });
