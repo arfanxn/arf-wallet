@@ -18,29 +18,84 @@ class TransactionHistoryController extends Controller
     public function index()
     {
         $transactions = Auth::user()->wallet->allTransactions()
-            ->orderBy("created_at", "desc")->paginate(15);
+            ->orderBy("created_at", "desc")->simplePaginate(15);
         return view("transactions.histories", compact("transactions"));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show filtered transactions .
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function filter(Request $request)
     {
-        //
-    }
+        $transactions = Auth::user()->wallet;
+        $transactionType =  $request->get("transaction-type") ?? "all";
+        $transactionDate = $request->get("transaction-date") ?? "all";
+        $sortBy = $request->get("sortby") ?? "desc";
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        switch ($transactionType) {
+            case "send-money":
+                $transactions = $transactions->transferedTransactions();
+                break;
+            case "receive-money":
+                $transactions = $transactions->receivedTransactions();
+                break;
+            default: // show all
+                $transactions = $transactions->allTransactions();
+                break;
+        }
+
+        switch ($transactionDate) {
+            case "today":
+                $transactions = $transactions->where("created_at", ">=", now()->startOfDay()->toDateTimeString());
+                break;
+            case "this-week":
+                $transactions = $transactions
+                    ->where("created_at", ">=", now()->startOfWeek()->toDateTimeString());
+                break;
+            case "this-month":
+                $transactions = $transactions
+                    ->where("created_at", ">=", now()->startOfMonth()->toDateTimeString());
+                break;
+            case "range-3-month":
+                $transactions = $transactions
+                    ->where("created_at", ">=", now()->subMonth(03)->toDateTimeString());
+                break;
+            case "this-year":
+                $transactions = $transactions
+                    ->where("created_at", ">=", now()->startOfYear()->toDateTimeString());
+                break;
+            default: // show all
+                $transactions = $transactions;
+                break;
+        }
+
+        switch ($sortBy) {
+            case "asc":
+            case "oldest":
+                $transactions = $transactions->orderBy("created_at", "asc");
+                break;
+            case "desc":
+            case "newest":
+            default:
+                $transactions =  $transactions->orderBy("created_at", "desc");
+                break;
+        }
+
+        $transactions = $transactions->simplePaginate(15);
+
+        $transactions->appends([
+            "sortby" => $sortBy,
+            "transaction-date" => $transactionDate, "transaction-type" => $transactionType,
+        ]);
+
+        // return dd($transactions->where("created_at", "=", now()->startOfDay()->toDateTimeString())->simplePaginate()->appends([
+        //     "sortby" => $sortBy,
+        //     "date" => $filterDate, "transaction-type" => $transactionType,
+        // ]));
+
+        return view("transactions.histories", compact("transactions"));
     }
 
     /**
@@ -57,39 +112,5 @@ class TransactionHistoryController extends Controller
         $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
             $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
         return view("transactions.detail", compact("transaction"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
     }
 }
