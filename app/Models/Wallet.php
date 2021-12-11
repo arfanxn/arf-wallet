@@ -12,8 +12,6 @@ class Wallet extends Model
 {
     use HasFactory;
 
-    use WalletTransferMethodTrait;
-
     protected $fillable = ["balance"];
 
     public function owner()
