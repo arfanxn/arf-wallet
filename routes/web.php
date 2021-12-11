@@ -91,16 +91,25 @@ Route::middleware("auth")->group(function () {
 
 
 
-// Test Recent Transfer Wallets
-Route::get("recent-wallets", function () {
-    dd(Transaction::where("from_wallet_id", 1)->get()->unique("to_wallet_id"));
-});
 
 
-// TEST TRANSFER 
-Route::get("transfer", function () {
-    dd(Wallet::transfer("LGFY0HNQ9409Z7XN", 999999, 0, "hello world"));
-});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // TEST RENDER 
 Route::view("test-view", "accounts.index");
