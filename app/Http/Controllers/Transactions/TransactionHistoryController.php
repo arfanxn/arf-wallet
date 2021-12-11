@@ -17,9 +17,7 @@ class TransactionHistoryController extends Controller
      */
     public function index()
     {
-        $transactions = Auth::user()->wallet->allTransactions()
-            ->orderBy("created_at", "desc")->simplePaginate(15);
-        return view("transactions.histories", compact("transactions"));
+        return view("transactions.histories");
     }
 
     /**

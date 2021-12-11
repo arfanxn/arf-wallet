@@ -1,8 +1,9 @@
 class TransactionPaginator {
     constructor() {
-        this.transactionWrapper = document.querySelector("#transactionListsWrapper");
-        this.transactions = document.querySelectorAll(".transaction");
-        this.authWalletID = (this.transactionWrapper.getAttribute('data-authWallet'));
+        this.setSortBy("newest").setTransactionDate("all").setTransactionType("all")
+            .setPaginationFetchURL().fetchPagination().then(tscpag => {
+                tscpag.printPagination().printPaginationButton();
+            });
     }
 
     setSortBy(string) {
@@ -20,7 +21,7 @@ class TransactionPaginator {
         return this;
     }
 
-    setPaginateFetchURL(string = null) {
+    setPaginationFetchURL(string = null) {
         if (string == null) {
             const transactionDate = this.hasOwnProperty("transactionDate") ? this.transactionDate : "all",
                 transactionType = this.hasOwnProperty("transactionType") ? this.transactionType : "all",
@@ -28,15 +29,11 @@ class TransactionPaginator {
 
             const prefix = "/fe-api";
             let stringURL = `/transaction/history/filter?transaction-type=${transactionType}&transaction-date=${transactionDate}&sortby=${sortBy}`;
-            let page = `&page=`;
+            let page = `&page=1`;
 
-            this.fetchPaginateURL = prefix + stringURL + page + this.constructor.getPaginateCurrentPage();
-            this.prevPaginateURL = stringURL + page +
-                this.constructor.getPaginateCurrentPage() <= 1 ? 1 : (this.constructor.getPaginateCurrentPage() - 1);
-            this.nextPaginateURL = stringURL + page +
-                (this.constructor.getPaginateCurrentPage() + 1);
+            this.paginationFetchURL = prefix + stringURL + page;
         } else {
-            this.fetchPaginateURL = string;
+            this.paginationFetchURL = string;
         }
 
         return this;
@@ -44,7 +41,7 @@ class TransactionPaginator {
 
     async fetchPagination(url = null, callback = null) {
         if (typeof url == "function") callback = url;
-        if (!url || typeof url == "function") url = this.fetchPaginateURL;
+        if (!url || typeof url == "function") url = this.paginationFetchURL;
 
         let response = await fetch(url, {
             method: "post",
@@ -73,59 +70,107 @@ class TransactionPaginator {
         pagination = pagination ? pagination :
             this.fetchedPagination.data;
 
-        this.transactionWrapper.innerHTML = "";
+        let transactionPaginationWrapper = document
+            .getElementById("transaction-pagination-wrapper");
+        transactionPaginationWrapper.innerHTML = "";
 
-        pagination.forEach(elem => {
-            let transactionData = elem;
-            this.transactionWrapper.innerHTML += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
+        if (pagination.length > 1) {
+            pagination.forEach(transactionData => {
+                transactionPaginationWrapper.innerHTML += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
                 class="transaction d-flex justify-content-between py-3 border-bottom border-secondary mx-3 text-decoration-none text-dark">
                 <div class="my-auto">
                     <span class="d-block">
-                        ${this.authWalletID == transactionData.from_wallet_id ? 'Kirim Uang' : 'Terima Uang' }</span>
+                        ${this.getAuthWallet("user_id") == transactionData.from_wallet_id ? 'Kirim Uang' : 'Terima Uang' }</span>
                     <small>${Laravel.toDateTimeString(transactionData.created_at)}</small>
                 </div>
                 <div class="my-auto">
                     <span class="align-middle">${toIDR(transactionData.amount)}</span>
                 </div>
             </a>`
-        });
-
+            });
+        } else {
+            transactionPaginationWrapper.innerHTML = `<h1>Tidak Ditemukan</h1><h1>Tidak Ditemukan</h1><h1>Tidak Ditemukan</h1>`
+        }
         return this;
     }
 
     printPaginationButton() {
-        if (this.fetchedPagination.data.length() >= 1) {
-            let prevPaginateURL = document.getElementById("paginatorTransactionPrevURL");
-            if (prevPaginateURL) {
-                prevPaginateURL.setAttribute("href", this.prevPaginateURL);
-                prevPaginateURL.href = this.prevPaginateURL;
-            }
+        let totalCurrentPageTransactionPagination = document.querySelector(`#totalCurrentPageTransactionPagination`);
+        totalCurrentPageTransactionPagination.innerHTML = this.getPaginateCurrentPage();
 
-            let nextPaginateURL = document.getElementById("paginatorTransactionNextURL");
-            if (nextPaginateURL) {
-                nextPaginateURL.setAttribute("href", this.nextPaginateURL);
-                nextPaginateURL.href = this.nextPaginateURL;
-            }
+        let btnWrapperTransactionPagination = document.getElementById("btnWrapperTransactionPagination");
+        btnWrapperTransactionPagination.innerHTML = "";
+
+        let htmlString = `<nav><ul id="ul-transaction-paginator" class="pagination">`;
+        if (this.getPaginateCurrentPage() <= 1) {
+            htmlString += `<li class="page-item disabled" aria-disabled="true">
+                    <span class="page-link">Sebelumnya</span>
+                </li>`
+        } else {
+            htmlString += `<li class="page-item">
+                    <a id="paginatorTransactionPrevURL" class="page-link
+                    btnPrevNextTransactionPagination" data-href="${this.getPaginatePrevURL()}"
+                     href="#" rel="prev">Sebelumnya</a>
+                </li>`
         }
+        htmlString += `<li class="page-item">
+                    <a id="paginatorTransactionNextURL" class="btnPrevNextTransactionPagination
+                     page-link" href="#" data-href="${this.getPaginateNextURL()}" 
+                        rel="next">Selanjutnya</a>
+                </li>`
+
+        // `<li class="page-item disabled" aria-disabled="true">
+        //     <span class="page-link">Selanjutnya</span>
+        // </li>`
+
+        htmlString += `</ul></nav>`;
+
+        btnWrapperTransactionPagination.innerHTML = htmlString;
+
+        this.addPaginationButtonEventListener();
 
         return this;
     }
 
-    static getPaginateCurrentPage() { // return number of current pagination
-        const transactionsPaginator = document.getElementById("transactionsPaginator");
-        let currentPage = parseInt(transactionsPaginator.getAttribute("data-transaction-current-page"));
-        return typeof currentPage == "number" ? currentPage : 1;
+    addPaginationButtonEventListener() {
+        let btnPrevNextTransactionPagination = document.querySelectorAll(
+            ".btnPrevNextTransactionPagination");
+        btnPrevNextTransactionPagination.forEach(elem => {
+            elem.addEventListener("click", () => {
+                const anchorHref = elem.getAttribute("data-href");
+                transactionPaginator.fetchPagination(anchorHref).then(tscpag => {
+                    tscpag.printPagination().printPaginationButton();
+                });
+            });
+        });
     }
 
-    // static getPaginatePrevURL() {
-    //     const transactionsPaginator = document.getElementById("paginatorTransactionPrevURL");
-    //     return transactionsPaginator.getAttribute("href");
-    // }
+    getAuthWallet(key = null) {
+        if (this.fetchedPagination.hasOwnProperty("auth_wallet")) {
+            if (typeof key == "string") {
+                return this.fetchedPagination.auth_wallet.hasOwnProperty(key) ?
+                    this.fetchedPagination.auth_wallet[key] : null;
+            } else {
+                return this.fetchedPagination.auth_wallet
+            }
+        } else {
+            return null;
+        }
+    }
 
-    // static getPaginateNextURL() {
-    //     const transactionsPaginator = document.getElementById("paginatorTransactionNextURL");
-    //     return transactionsPaginator.getAttribute("href");
-    // }
+    getPaginateCurrentPage() { // return number of current pagination
+        return parseInt(this.fetchedPagination.meta.current_page);
+    }
+
+    getPaginatePrevURL() {
+        let links = this.fetchedPagination.links
+        return links.hasOwnProperty("prev") ? links.prev : null;
+    }
+
+    getPaginateNextURL() {
+        let links = this.fetchedPagination.links
+        return links.hasOwnProperty("next") ? links.next : null;
+    }
 }
 
 let transactionPaginator = (new TransactionPaginator);
@@ -140,7 +185,7 @@ btnShowFilteredTransactions.addEventListener("click", () => {
         transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
 
     transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
-        .setTransactionType(transactionType).setPaginateFetchURL()
+        .setTransactionType(transactionType).setPaginationFetchURL()
         .fetchPagination().then(obj => obj.printPagination().printPaginationButton());
 
     modalTransactionFilter.classList.add("d-none");
@@ -164,7 +209,7 @@ radioBtnSorting.forEach(elem => {
             transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
 
         transactionPaginator.setSortBy(sortBy).setTransactionDate(transactionDate)
-            .setTransactionType(transactionType).setPaginateFetchURL()
+            .setTransactionType(transactionType).setPaginationFetchURL()
             .fetchPagination().then(tscpag => tscpag.printPagination().printPaginationButton());
     });
 });
