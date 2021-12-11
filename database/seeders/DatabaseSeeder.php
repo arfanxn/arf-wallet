@@ -22,10 +22,14 @@ class DatabaseSeeder extends Seeder
             "password" => bcrypt("111222"),
         ]);
 
-        \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(20)->create();
+
+        $this->call([
+            TransactionSeeder::class,
+        ]);
 
         // for ($i = 0; $i < 10; $i++) {
-        \App\Models\Transaction::factory(10000)->create();
+        // \App\Models\Transaction::factory(10000)->create();
         // }
     }
 }
