@@ -11,6 +11,8 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
+
     protected $fillable = [
         "tx_hash",
         "from_wallet_id",
