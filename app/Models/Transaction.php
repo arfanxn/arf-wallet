@@ -15,7 +15,6 @@ class Transaction extends Model
         "tx_hash",
         "from_wallet_id",
         "to_wallet_id",
-        "transaction_type_id",
         "amount",
         "charge",
         "description",
