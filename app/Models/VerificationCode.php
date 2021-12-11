@@ -18,22 +18,5 @@ class VerificationCode extends Model
 
     protected $fillable = ['user_id', "email", "code", "expire_at"];
 
-    public static function send(User $user)
-    {
-        $email = $user->email;
-
-        $code = $user->getVerificationCode()->code  ??
-            $user->makeVerificationCode();
-
-        Notification::route('mail', $email)
-            ->notify(new VerificationCodeNotification($code));
-    }
-
-    public static function verify(User $user, int $code)
-    {
-        $userVerifiedCode = $user->getVerificationCode()->code ??
-            $user->makeVerificationCode();
-
-        return $code  == $userVerifiedCode;
-    }
+    const EXPIRE_TIME = 30;
 }
