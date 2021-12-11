@@ -22,7 +22,6 @@ class TransactionFactory extends Factory
         //     "amount" => rand(10000, 999999),
         //     "charge" => rand(0, 7000),
         //     "description" => $this->faker->text(100),
-        //     "status" => 1,
         // ];
 
         // received 
@@ -33,7 +32,6 @@ class TransactionFactory extends Factory
         //     "amount" => rand(10000, 999999),
         //     "charge" => rand(0, 7000),
         //     "description" => $this->faker->text(100),
-        //     "status" => 1,
         // ];
 
         // random
@@ -44,7 +42,6 @@ class TransactionFactory extends Factory
             "amount" => rand(10000, 999999),
             "charge" => rand(0, 7000),
             "description" => $this->faker->text(100),
-            "status" => 1,
         ];
     }
 }

@@ -26,7 +26,6 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger("amount");
             $table->unsignedInteger("charge")->default(0);
             $table->string("description", 255)->nullable();
-            $table->boolean("status");
             $table->timestamps();
         });
     }

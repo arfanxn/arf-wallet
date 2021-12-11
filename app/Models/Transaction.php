@@ -19,7 +19,6 @@ class Transaction extends Model
         "amount",
         "charge",
         "description",
-        "status"
     ];
 
     public static function getLastTransactionTo($wallet_or_walletId)
