@@ -70,19 +70,3 @@ function clickRadioBtnWhereValueEqualTo(elementsName_or_elementObjects, valueSho
         }
     });
 }
-
-// function setURLparameters(url, objectOfParameters) {
-//     const objKeys = Object.keys(objectOfParameters);
-//     const objLength = objKeys.length;
-
-//     for (let i = 0; i < objLength; i++) {
-//         if (i == 0) {
-//             let regex = new RegExp(`[?|/]+(${objKeys[i]})(=)[a-zA-Z]+`, "ig");
-//             url.replace(regex, `?${objKeys[i]}=${objectOfParameters[objKeys[i]]}`);
-//         } else {
-//             let regex = new RegExp(`[?|/]+(${objKeys[i]})(=)[a-zA-Z]+`, "ig");
-//             url.replace(regex, `&${objKeys[i]}=${objectOfParameters[objKeys[i]]}`);
-//         }
-
-//     }
-// }
