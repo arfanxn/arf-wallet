@@ -6,8 +6,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Transactions\SendMoneyController;
 use App\Http\Controllers\Transactions\TransactionHistoryController;
-use App\Models\Transaction;
-use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,15 +34,15 @@ Route::middleware("guest")->group(function () {
             "as" => "showConfirmPin"
         ]);
         Route::post("", [
-            "uses" => RegisterController::class . "@store",
-            "as" => "store"
+            "uses" => RegisterController::class . "@storeAndLogin",
+            "as" => "storeAndLogin"
         ]);
     });
 
     Route::group(["prefix" => "login", "as" => "login.",], function () {
         Route::get("", ["uses"  => LoginController::class . "@show", "as" => "show"]);
         Route::post("", [
-            "uses" => LoginController::class . "@handlePhoneNumber", "as" => "handlePhoneNumber"
+            "uses" => LoginController::class . "@handleEmail", "as" => "handleEmail"
         ]);
         Route::get("insert-pin", [
             "uses" => LoginController::class . "@showInsertPin", "as" =>  "showInsertPin"
@@ -138,7 +136,7 @@ Route::group(["prefix" => "auth"],  function () {
     Route::get("logout", fn () => Auth::logout());
     Route::get("info", fn () => dd(Auth::user(), Auth::check()));
     Route::get("login", function () {
-        Auth::attempt(["phone_number" => "089506089254", "password" => "111222"]);
+        Auth::attempt(["email" => "arfan@gm.com", "password" => "111222"]);
         // dd(Auth::check());
     });
 });
