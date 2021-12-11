@@ -5,9 +5,9 @@
     </x-transaction-header>
 
 
-    <main id="transactionListsWrapper" class="bg-light mt-3 pt-3  overflow-auto"
-        data-authWallet="{{ $authWallet->only('user_id')['user_id'] }}">
-        @foreach ($transactions as $transaction)
+    <main id="transaction-pagination-wrapper" class="bg-light mt-3 pt-3  overflow-auto">
+        {{-- PAGINATION WILL BE PRINTED WITH JS VIA API REQUEST --}}
+        {{-- @foreach ($transactions as $transaction)
             <a href="{{ route('transaction.detail', $transaction->tx_hash) }}" data-transaction="{{ $transaction }}"
                 class="transaction  d-flex justify-content-between py-3 border-bottom border-secondary mx-3 text-decoration-none text-dark">
                 <div class="my-auto">
@@ -19,11 +19,17 @@
                     <span class="align-middle">{{ toIDR($transaction->amount) }}</span>
                 </div>
             </a>
-        @endforeach
+        @endforeach --}}
     </main>
 
-    <div class="d-flex justify-content-end mt-3 me-3">
-        {{ $transactions->links('vendor.pagination.transactions-history') }}</div>
+    <div class="d-flex justify-content-between mt-3 mx-3 align-middle">
+        <div class="">
+            <h6 class="my-auto badge bg-info rounded fs-6">Page : <span
+                    id="totalCurrentPageTransactionPagination"></span></h6>
+        </div>
+        <div id="btnWrapperTransactionPagination"></div>
+    </div>
+    {{-- <div id="btnWrapperTransactionPagination" class="d-flex justify-content-end mt-3 me-3"></div> --}}
 
     <div class="py-5 my-5 w-100" style="height: 400px"></div>
     <footer
@@ -32,12 +38,12 @@
             <x-icon.sorting-order />
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="transactions-sorting" id="radioNewest" checked
-                    value="newest">
+                    @if (old('transactions-sorting') == 'newest') checked @endif value="newest">
                 <label class="form-check-label" for="radioNewest">Terbaru</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="transactions-sorting" id="radioOldest"
-                    value="oldest">
+                    @if (old('transactions-sorting') == 'oldest') checked @endif value="oldest">
                 <label class="form-check-label" for="radioOldest">Terlama</label>
             </div>
         </div>
@@ -53,7 +59,6 @@
 
     <x-modal.transaction-filter />
     <x-slot name="scripts">
-        {{-- <script src="{{ asset('js/Controllers/TransactionHistoryController.js') }}"></script> --}}
         <script src="{{ asset('js/Transactions/TransactionPaginator.js') }}"></script>
     </x-slot>
 

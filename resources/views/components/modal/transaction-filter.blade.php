@@ -22,33 +22,33 @@
                     <small class="d-block fw-light">Pilih jarak waktu untuk ditampilkan</small>
                     <div class="row p-0 m-0 row-cols-4 justify-content-start">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="transactions-filter-date" value="all"
-                                checked id="radiofilterShowAll">
+                            <input class="form-check-input" type="radio" @if (old('transactions-filter-date') == 'all') checked @endif
+                                name="transactions-filter-date" value="all" checked id="radiofilterShowAll">
                             <label class="form-check-label" for="radiofilterShowAll">Semua</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="transactions-filter-date" value="today"
-                                id="radiofilterToday">
+                            <input class="form-check-input" type="radio" @if (old('transactions-filter-date') == 'today') checked @endif
+                                name="transactions-filter-date" value="today" id="radiofilterToday">
                             <label class="form-check-label" for="radiofilterToday">Hari Ini</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-date"
-                                value="this-week" id="radiofilterWeek">
+                                @if (old('transactions-filter-date') == 'this-week') checked @endif value="this-week" id="radiofilterWeek">
                             <label class="form-check-label" for="radiofilterWeek">Minggu Ini</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-date"
-                                value="this-month" id="radiofilterMonth">
+                                @if (old('transactions-filter-date') == 'this-month') checked @endif value="this-month" id="radiofilterMonth">
                             <label class="form-check-label" for="radiofilterMonth">Bulan Ini</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-date"
-                                value="range-3-month" id="radiofilter3MonthAgo">
+                                @if (old('transactions-filter-date') == 'range-3-month') checked @endif value="range-3-month" id="radiofilter3MonthAgo">
                             <label class="form-check-label" for="radiofilter3MonthAgo">3 Bulan Ini</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-date"
-                                value="this-year" id="radiofilterYear">
+                                @if (old('transactions-filter-date') == 'this-year') checked @endif value="this-year" id="radiofilterYear">
                             <label class="form-check-label" for="radiofilterYear">Tahun ini</label>
                         </div>
                     </div>
@@ -57,17 +57,17 @@
                     <div class="row p-0 m-0 row-cols-4 justify-content-start">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-type" value="all"
-                                checked checked id="radiofilterTransactionShowAll">
+                                @if (old('transactions-filter-type') == 'all') checked @endif checked checked id="radiofilterTransactionShowAll">
                             <label class="form-check-label" for="radiofilterTransactionShowAll">Semua</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-type"
-                                value="send-money" id="radiofilterTransactionSendMoney">
+                                @if (old('transactions-filter-type') == 'send-money') checked @endif value="send-money" id="radiofilterTransactionSendMoney">
                             <label class="form-check-label" for="radiofilterTransactionSendMoney">Kirim Uang</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="transactions-filter-type"
-                                value="receive-money" id="radiofilterTransactionReceiveMoney">
+                                @if (old('transactions-filter-type') == 'receive-money') checked @endif value="receive-money" id="radiofilterTransactionReceiveMoney">
                             <label class="form-check-label" for="radiofilterTransactionReceiveMoney">Terima Uang</label>
                         </div>
                     </div>
