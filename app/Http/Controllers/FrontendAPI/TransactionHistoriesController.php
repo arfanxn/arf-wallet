@@ -14,7 +14,6 @@ class TransactionHistoriesController extends Controller
     public function filterByDateAndTransactionType(Request $request)
     {
         // env(app_url) . /fe-api/controller?transaction-type=send-money&filter-date=today
-
         $transactions = Auth::user()->wallet;
         $transactionType =  $request->get("transaction-type") ?? "all";
         $transactionDate = $request->get("transaction-date") ?? "all";
@@ -75,84 +74,7 @@ class TransactionHistoriesController extends Controller
             "transaction-date" => $transactionDate, "transaction-type" => $transactionType,
         ]);
 
-        return TransactionResource::collection($transactions);
-    }
-
-    // public function getByRangeOneMonthAndTypeSendMoney
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+        return  TransactionResource::collection($transactions)
+            ->additional(["auth_wallet" => app("AuthWallet")->only("user_id")]);
     }
 }
