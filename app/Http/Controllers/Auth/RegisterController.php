@@ -14,8 +14,8 @@ class RegisterController extends Controller
 {
     public function create()
     {
-        return Session::has("phone_number") ?
-            view("auth.register", ["phone_number" => Session::get('phone_number')]) :
+        return Session::has("email") ?
+            view("auth.register", ["email" => Session::get('email')]) :
 
             redirect()->to(route("login.show"));
     }
@@ -30,6 +30,10 @@ class RegisterController extends Controller
             "email" => ["required", "unique:users,email", "email"],
             "pin_number" => ["required", "numeric", "digits_between:6,8",],
         ]);
+        if (Session::get("email") != $attribute["email"]) {
+            return redirect()->to(route("register.create"))->withErrors(["email" => "Detected : Email Edited!"]);
+        };
+
         $request->session()->put($attribute);
         return redirect()->to(route("register.showConfirmPin"));
     }
@@ -42,7 +46,7 @@ class RegisterController extends Controller
             : redirect()->to("register.create");
     }
 
-    public function store(Request $request)
+    public function storeAndLogin(Request $request)
     {
         $request->merge(["pin_number" => $request->session()->get("pin_number")]);
         $request->validate([
@@ -51,19 +55,20 @@ class RegisterController extends Controller
 
         User::create([
             "name" => $request->session()->pull("fullname"),
-            "email" => $request->session()->pull("email"),
-            "phone_number" => $request->session()->get("phone_number"),
+            "email" => $request->session()->get("email"),
+            "phone_number" => $request->session()->pull("phone_number"),
             "password" => bcrypt($request->pin_number)
         ]);
 
         // event()
 
         Auth::attempt([
-            "phone_number" => $request->session()->pull("phone_number"),
+            "email" => $request->session()->pull("email"),
             "password" => $request->pin_number,
         ], remember: 1);
 
         return redirect()->to(RouteServiceProvider::HOME())
-            ->with(["success" => "Akun anda telah teregistrasi, kini anda dapat login dengan Nomor HP."]);
+            ->with(["success" =>
+            "Akun anda telah teregistrasi, kini anda dapat login dengan Email."]);
     }
 }

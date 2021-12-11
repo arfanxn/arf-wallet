@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\ControllerAndMethodServiceProvider as ControllerAndMethod;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
+
 
 class LoginController extends Controller
 {
@@ -19,15 +18,15 @@ class LoginController extends Controller
         return view("auth.login");
     }
 
-    public function handlePhoneNumber(Request $request)
+    public function handleEmail(Request $request)
     {
         $request->validate([
-            "phone_number" => ["required",  "numeric", "digits_between:10,14"],
+            "email" => ["required", "email"],
         ]);
 
-        Session::put(["phone_number" => $request->phone_number]);
+        Session::put(["email" => $request->email]);
 
-        if (!User::where("phone_number", intval($request->phone_number))->first()) {
+        if (!User::where("email", $request->email)->exists()) {
             return redirect()->to(route("register.create"));
         }
 
@@ -36,8 +35,8 @@ class LoginController extends Controller
 
     public function showInsertPin()
     {
-        return Session::has("phone_number") ?
-            view("auth.login-insert-pin", ["phone_number" => Session::get("phone_number")])
+        return Session::has("email") ?
+            view("auth.login-insert-pin", ["email" => Session::get("email")])
 
             : redirect()->to(route("login.show"));
     }
@@ -49,7 +48,7 @@ class LoginController extends Controller
         ]);
 
         $credentials = [
-            "phone_number" => Session::get("phone_number"),
+            "email" => Session::get("email"),
             "password" => $request->pin_number
         ];
 

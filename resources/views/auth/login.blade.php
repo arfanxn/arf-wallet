@@ -8,34 +8,32 @@
 
     <main class="bg-primary w-100  pt-5" style="height: 100vh">
         <div class="text-center">
-            <p class="text-white ">Masukan Nomor <span class="fw-bold">HP</span> Kamu untuk lanjut</p>
+            <p class="text-white ">Masukan <span class="fw-bold">Email</span> Kamu untuk lanjut</p>
             <form method="POST" class="mt-4 text-center position-relative w-100"
-                action="{{ route('login.handlePhoneNumber') }}" id="form-phone-number"> @csrf
+                action="{{ route('login.handleEmail') }}" id="form-email"> @csrf
                 <div class="input-group px-5">
                     <span class="input-group-text bg-white py-0 px-1">
-                        <img class="" src="{{ asset('icon/indonesia-flag.png') }}">
-                        <small class="my-auto d-inline fw-bold text-dark px-1">+62</small>
+                        {{-- <img class="" src="{{ asset('icon/indonesia-flag.png') }}"> --}}
+                        <small class="my-auto d-inline fw-bold text-dark px-1">Email</small>
                     </span>
-                    <input name="phone_number" value="{{ $phone_number ?? old('phone_number') }}" type="text"
-                        class="form-control bg-white text-dark @error('phone_number') is-invalid @enderror"
-                        placeholder="Nomor HP">
+                    <input name="email" value="{{ $email ?? old('email') }}" type="text"
+                        class="form-control bg-white text-dark @error('email') is-invalid @enderror"
+                        placeholder="email_kamu@example.com">
                 </div>
+                <x-auth.input-error-alert error="email" />
             </form>
-            @error('phone_number')
-                <p class="text-danger my-0 fw-bold badge bg-white">{{ $message }}</p>
-            @enderror
+
+
+
             <p class="text-white text-center mx-auto px-4 text-break mt-4" style="width: 90%">
                 Dengan melanjutkan, kamu setuju dengan <span class="fw-bold">Syarat & Ketentuan</span> dan
                 <span class="fw-bold">Kebijakan Privasi</span> kami
             </p>
 
-            <a href="" id="btn-lanjut" onclick="event.preventDefault()"
-                class=" text-decoration-none  font-monospace cursor-pointer text-white fw-bold  m-5">LANJUT
+            <a onclick="submitForm()"
+                class="cursor-pointer text-decoration-none  font-monospace cursor-pointer text-white fw-bold  m-5">LANJUT
                 ></a>
         </div>
     </main>
 
-    <x-slot name="scripts">
-        <script src="{{ asset('auth/js/auth.js') }}"></script>
-    </x-slot>
 </x-app-layout>
