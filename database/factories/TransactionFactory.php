@@ -35,11 +35,13 @@ class TransactionFactory extends Factory
         // ];
 
         // random
+        $from = rand(1, 10);
+        $to = rand(1, 10);
         return [
             "tx_hash" => strtoupper(Str::random(10)) . preg_replace("/[^0-9]+/",  "", now()->toDateTimeString()),
-            "from_wallet_id" => rand(1, 5),
-            "to_wallet_id" => rand(6, 9),
-            "amount" => rand(10000, 999999),
+            "from_wallet_id" =>  $from != $to ? $from : $from + 1,
+            "to_wallet_id" => $to != $from ? $to : $to + 2,
+            "amount" => rand(10000, 9999999),
             "charge" => rand(0, 7000),
             "description" => $this->faker->text(100),
         ];
