@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SendMoneyStoreRequest;
+use App\Services\SendMoneyService;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
 
 class SendMoneyController extends Controller
 {
@@ -53,56 +53,14 @@ class SendMoneyController extends Controller
     {
         $address = decryptAndCatch($address, fn () => abort(404));
 
-        $charge = $request->charge ?? 0;
-        $walletTransaction = Wallet::transfer($address, $request->amount, $charge, $request->description ?? "");
+        $charge = intval($request->charge ?? 0);
+        $resultOfTransfer = (new SendMoneyService)->setFromWallet()->setToWallet($address)
+            ->setAmount(intval($request->amount))->setCharge($charge)
+            ->setDescription($request->description ?? "")
+            ->transfer();
 
-        return isset($walletTransaction->original["success"]) ?
-            redirect()->to(route("transaction.detail", $walletTransaction->original["tx_hash"]))->with(["success" => "Transaksi Berhasil"])
-            : back()->with(["error" => $walletTransaction->original["message"] ?? $walletTransaction->message ?? $walletTransaction ?? "Error Occured"]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
+        return $resultOfTransfer["status"] ?
+            redirect()->to(route("transaction.detail", $resultOfTransfer["tx_hash"]))->with(["success" => "Transaksi Berhasil"])
+            : back()->withErrors(["error" => $resultOfTransfer["message"]]);
     }
 }
