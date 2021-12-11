@@ -14,8 +14,6 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
-        // // 
-        // dd("fired");
         return redirect()->to(route("transaction.detail", $transaction->tx_hash))
             ->with(["success" => "Transaksi Berhasil."]);
     }
