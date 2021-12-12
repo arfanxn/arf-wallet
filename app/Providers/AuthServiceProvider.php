@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define("show-transaction-history", function (User $user, \App\Models\Transaction $transaction) {
+        Gate::define("show-transaction-detail", function (User $user, \App\Models\Transaction $transaction) {
             $userWalletId =  $user->wallet->id;
             return  $userWalletId == $transaction->from_wallet_id
                 || $userWalletId == $transaction->to_wallet_id;
