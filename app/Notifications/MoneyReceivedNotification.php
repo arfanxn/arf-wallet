@@ -23,7 +23,7 @@ class MoneyReceivedNotification extends Notification implements ShouldQueue
     {
         $this->transaction = $transaction;
 
-        $this->delay(now()->addMinutes(5));
+        $this->delay(now()->addMinutes(3));
     }
 
     /**
