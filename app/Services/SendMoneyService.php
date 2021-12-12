@@ -24,13 +24,13 @@ class SendMoneyService
         return $this;
     }
 
-    public function setDescription(string $description)
+    public function setDescription(string $description = "")
     {
         $this->description = $description;
         return $this;
     }
 
-    public function setFromWallet(Wallet|string|int $fromWallet = null)
+    public function setFromWallet(Wallet|string $fromWallet = null) //wallet object or address
     {
         if (is_null($fromWallet)) $this->fromWallet = (app()->make("AuthWallet"))->address;
         elseif ($fromWallet instanceof Wallet) $this->fromWallet = $fromWallet->address;
@@ -39,9 +39,10 @@ class SendMoneyService
         return $this;
     }
 
-    public function setToWallet($toWallet)
+    public function setToWallet(Wallet|string $toWallet) //wallet object or address
     {
-        $this->forWallet = $toWallet;
+        $this->forWallet = $toWallet instanceof Wallet ?  $toWallet->address
+            : $toWallet;
 
         return $this;
     }
@@ -62,7 +63,7 @@ class SendMoneyService
 
             // check is fromWallet valid/exist and balance enough for doing this transfer proccess
             $fromWallet = Wallet::where(function ($q) use ($fromWallet) {
-                $q->where("id", $fromWallet)->orWhere("address", $fromWallet);
+                $q->where("address", $fromWallet);
             })->where("balance", ">=", ($amount + $charge));
             !$fromWallet->exists() ? throw new TransferException("Saldo Wallet kamu tidak cukup!")
                 // if exist -> subtract the fromWallet balance
@@ -72,13 +73,13 @@ class SendMoneyService
 
             // if the user send to the same wallet, let say wallet-id-1 send to wallet-id-1 ,throw an error.
             $fromWalletData = $fromWallet->first(); //get the fromWallet data
-            if ($fromWalletData->address ==  $toWallet || $fromWalletData->id == $toWallet)
+            if ($fromWalletData->address ==  $toWallet)
                 throw new TransferException("Tidak dapat mengirim ke Wallet yang sama!");
             // end
 
             // check is toWallet exist and valid
             $toWallet = Wallet::where(function ($q) use ($toWallet) {
-                $q->where("address", $toWallet)->orWhere("id", $toWallet);
+                $q->where("address", $toWallet);
             });
             !$toWallet->exists() ? throw new
                 TransferException("Alamat Wallet tujuan tidak ditemukan atau tidak valid!")
