@@ -15,4 +15,8 @@ class TransferException extends Exception
     {
         return back()->withErrors(["amount" => $this->getMessage()]);
     }
+
+    //     public static function reportAsArray(...$arr)
+    //     {
+    //     }
 }
