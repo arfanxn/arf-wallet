@@ -7,6 +7,8 @@ use App\Http\Requests\SendMoneyStoreRequest;
 use App\Services\SendMoneyService;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Repositories\TransactionRepository;
+use App\Repositories\WalletRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +21,8 @@ class SendMoneyController extends Controller
      */
     public function index()
     {
-        $recentWallets = (Auth::user())->recentTransferedWallets();
+        $recentWallets =
+            WalletRepository::getRecentTransferedWalletsByWallet(app("AuthWallet"));
         return view("transactions.send-money", compact("recentWallets"));
     }
 
@@ -30,16 +33,16 @@ class SendMoneyController extends Controller
      */
     public function create(Request $request,  $address)
     {
-        $encryptedWalletAddress = $address;
+        $encryptedToWalletAddress = $address;
         $address = decryptAndCatch($address, fn () => abort(404));
 
         $toWallet = Wallet::with("owner")->where("address", $address)->first();
         if (!$toWallet) return abort(404);
 
-        $lastTransactionTo = Transaction::getLastTransactionTo($toWallet);
+        $lastTransactionTo = TransactionRepository::getLastTransactionTo($toWallet);
         return view(
             "transactions.send-money-to",
-            compact("toWallet", "lastTransactionTo", "encryptedWalletAddress")
+            compact("toWallet", "lastTransactionTo", "encryptedToWalletAddress")
         );
     }
 

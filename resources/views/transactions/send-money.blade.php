@@ -1,8 +1,8 @@
 <x-app-layout title="Kirim Uang" :navbar-top="false" :navbar-bottom="false">
     <x-transaction-header class="h-25" route="{{ route('home') }}">Kirim Uang</x-transaction-header>
 
-    <div class="position-absolute col-4 mt-5" style="z-index: 99999">
-        <div class="bg-white mx-auto rounded px-2 py-2" style="width: 95%;">
+    <div class="position-absolute col-4 mt-5  " style="z-index: 99999">
+        <div class="bg-white mx-auto rounded px-2 py-2 " style="width: 95%;">
             <h6 class="fw-bold d-block">Kirim Cepat</h6>
             <div class="input-group mb-3 mt-3">
                 <span class="input-group-text bg-white py-1 px-2" id="basic-addon1">

@@ -88,7 +88,7 @@ class SendMoneyService
             $toWalletData = $toWallet->first();
             // end 
 
-            
+
             // make the transaction history / transaction invoice 
             // tx_hash is the transaction uniq_id
             $tx_hash = strtoupper(Str::random(10)) . preg_replace("/[^0-9]+/",  "", now()->toDateTimeString());

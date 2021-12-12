@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Transaction;
+use App\Notifications\TransactionSuccessNotification;
+use Illuminate\Support\Facades\Notification;
 
 class TransactionObserver
 {
@@ -14,8 +16,14 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
-        return redirect()->to(route("transaction.detail", $transaction->tx_hash))
-            ->with(["success" => "Transaksi Berhasil."]);
+        $fromUser = $transaction->fromWallet();
+
+        dd($fromUser);
+
+        Notification::route('mail', $email)
+            ->notify(new TransactionSuccessNotification($transaction));
+        // return redirect()->to(route("transaction.detail", $transaction->tx_hash))
+        //     ->with(["success" => "Transaksi Berhasil."]);
     }
 
     /**

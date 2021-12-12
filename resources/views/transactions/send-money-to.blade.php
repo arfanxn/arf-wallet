@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('transaction.send-money.store', $encryptedWalletAddress) }}" method="POST">
+            <form action="{{ route('transaction.send-money.store', $encryptedToWalletAddress) }}" method="POST">
                 @csrf
                 <label for="input-amount" class="fw-bold text-secondary mb-2">Jumlah Kirim</label>
                 <div class="input-group ">

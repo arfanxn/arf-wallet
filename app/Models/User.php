@@ -58,19 +58,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Wallet::class, "user_id", "id");
     }
-
-    public function recentTransferedWallets()
-    {
-        $transferedTransactions = ($this->load([
-            "wallet.transferedTransactions" => function ($query) {
-                return $query->orderBy("created_at", "desc");
-            }
-        ]))->wallet->transferedTransactions->unique("to_wallet_id");
-        $transferedTransactions = $transferedTransactions->load("toWallet.owner");
-        $recentWallets = [];
-        foreach ($transferedTransactions as  $transferedTransaction) {
-            array_push($recentWallets, $transferedTransaction->toWallet);
-        };
-        return $recentWallets;
-    }
 }
