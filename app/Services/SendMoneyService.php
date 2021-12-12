@@ -111,10 +111,18 @@ class SendMoneyService
             ];
         } catch (TransferException $e) {
             DB::rollBack();
-            return $e->report();
+            return [
+                "status" => false,
+                "message" => $e->getMessage(),
+            ];
+            // return $e->report();
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
-            return $e->getMessage();
+            return [
+                "status" => false,
+                "message" => $e->getMessage(),
+            ];
+            // return $e->getMessage();
         }
     }
 }
