@@ -41,7 +41,7 @@ class VerificationCodeNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable = "")
+    public function toMail($notifiable)
     {
         return (new MailMessage)
             ->subject("Kode Verfikasi | " . config("app.name"))
