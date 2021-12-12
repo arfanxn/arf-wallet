@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MoneyReceivedNotification extends Notification
+class MoneyReceivedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -22,6 +22,8 @@ class MoneyReceivedNotification extends Notification
     public function __construct(Transaction $transaction)
     {
         $this->transaction = $transaction;
+
+        $this->delay(now()->addMinutes(5));
     }
 
     /**

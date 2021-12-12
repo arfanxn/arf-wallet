@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MoneySentSuccessNotification extends Notification
+class MoneySentSuccessNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -17,9 +17,12 @@ class MoneySentSuccessNotification extends Notification
      *
      * @return void
      */
+    private $transaction;
     public function __construct(Transaction $transaction)
     {
-        //
+        $this->transaction = $transaction;
+
+        $this->delay(now()->addMinutes(5));
     }
 
     /**
