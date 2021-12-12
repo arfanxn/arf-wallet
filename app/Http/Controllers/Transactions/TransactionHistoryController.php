@@ -29,7 +29,7 @@ class TransactionHistoryController extends Controller
     public function show(Transaction $transaction)
     {
         $authUser =  Auth::user()->load("wallet");
-        if (Gate::denies("show-transaction-history", $transaction)) abort(403);
+        if (Gate::denies("show-transaction-detail", $transaction)) abort(403);
 
         $transaction = $authUser->wallet->id == $transaction->from_wallet_id ?
             $transaction->load("toWallet.owner") : $transaction->load("fromWallet.owner");
