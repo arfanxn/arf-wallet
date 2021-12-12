@@ -44,10 +44,16 @@ class MoneySentSuccessNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $transaction = $this->transaction->loadMissing("fromWallet.owner", "toWallet.owner");
+        $fromWallet = $transaction->fromWallet;
+        $toWallet =  $transaction->toWallet;
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject("Transaksi Berhasil | " . config("app.name"))
+            ->view("notifications.money-sent-success", [
+                "transaction" => $transaction,
+                "toWallet" => $toWallet,
+                "fromWallet" => $fromWallet
+            ]);
     }
 
     /**

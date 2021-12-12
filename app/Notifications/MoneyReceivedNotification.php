@@ -45,10 +45,16 @@ class MoneyReceivedNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
+        $transaction = $this->transaction->loadMissing("fromWallet.owner", "toWallet.owner");
+        $fromWallet = $transaction->fromWallet;
+        $toWallet =  $transaction->toWallet;
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject("Anda Menerima " . toIDR($transaction->amount) . " | " . config("app.name"))
+            ->view("notifications.received-money", [
+                "transaction" => $transaction,
+                "toWallet" => $toWallet,
+                "fromWallet" => $fromWallet
+            ]);
     }
 
     /**
