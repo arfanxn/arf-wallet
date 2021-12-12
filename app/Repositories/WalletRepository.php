@@ -7,13 +7,13 @@ use App\Models\Wallet;
 
 class WalletRepository
 {
-    public static function getRecentTransferedWalletsByWallet(Wallet|int $walletOrID)
+    public static function getRecentTransferedWalletsByWallet(Wallet|int $walletOrID, int $limit = 10)
     {
         if ($walletOrID instanceof Wallet) $wallet = $walletOrID->id;
         $transferedTransactions = Transaction::with("toWallet.owner")
             ->where("from_wallet_id", $wallet)
             ->orderBy("created_at", "desc")
-            ->limit(15)->get()->unique("to_wallet_id");
+            ->limit($limit)->get()->unique("to_wallet_id");
 
         $index = 0;
         $recentWallets = [];
