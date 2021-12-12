@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="overflow-hidden text-center">
+<body class="overflow-auto text-center">
 
     <header class="py-2 w-100  bg-primary">
         <a class="text-decoration-none text-dark fs-4 badge px-sm-3 px-md-5" href="{{ route('home') }}"
