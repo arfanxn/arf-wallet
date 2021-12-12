@@ -3,7 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Transaction;
-use App\Notifications\TransactionSuccessNotification;
+use App\Notifications\MoneyReceivedNotification;
+use App\Notifications\MoneySentSuccessNotification;
 use Illuminate\Support\Facades\Notification;
 
 class TransactionObserver
@@ -16,14 +17,14 @@ class TransactionObserver
      */
     public function created(Transaction $transaction)
     {
-        $fromUser = $transaction->fromWallet();
+        $transaction = $transaction->load("fromWallet.owner", "toWallet.owner");
+        $fromWallet = $transaction->fromWallet;
+        $toWallet = $transaction->toWallet;
 
-        dd($fromUser);
-
-        Notification::route('mail', $email)
-            ->notify(new TransactionSuccessNotification($transaction));
-        // return redirect()->to(route("transaction.detail", $transaction->tx_hash))
-        //     ->with(["success" => "Transaksi Berhasil."]);
+        Notification::route('mail', $fromWallet->owner->email)
+            ->notify(new MoneySentSuccessNotification($transaction));
+        Notification::route('mail', $toWallet->owner->email)
+            ->notify(new MoneyReceivedNotification($transaction));
     }
 
     /**

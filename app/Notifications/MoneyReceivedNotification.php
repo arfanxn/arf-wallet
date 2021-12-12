@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TransactionSuccessNotification extends Notification
+class MoneyReceivedNotification extends Notification
 {
     use Queueable;
 

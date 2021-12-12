@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Notifications\Wallet;
+namespace App\Notifications;
 
+use App\Models\Transaction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TransferSuccess extends Notification
+class MoneySentSuccessNotification extends Notification
 {
     use Queueable;
 
@@ -16,7 +17,7 @@ class TransferSuccess extends Notification
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Transaction $transaction)
     {
         //
     }
@@ -41,13 +42,9 @@ class TransferSuccess extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->subject("Notification from arf-wallet")
-            ->from("ARF-WALLET@gmail.com", "ARF-WALLET")
-            ->greeting("Greeting")
             ->line('The introduction to the notification.')
             ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!')
-            ->markdown("vendor.notifications.email");
+            ->line('Thank you for using our application!');
     }
 
     /**
