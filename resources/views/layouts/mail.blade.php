@@ -37,8 +37,11 @@
         </a>
     </header>
 
-    <main class="text-center w-100 mt-3 px-md-5 px-3 text-break ">
+    <main class="text-center w-100 mt-3 px-md-5 px-3 pt-2 text-break ">
         {{ $slot }}
+
+        <br><br><br>
+        <p class="">Salam, <span class="fw-bold">{{ config('app.name') }}</span></p>
     </main>
 
     {!! $scripts ?? '' !!}
