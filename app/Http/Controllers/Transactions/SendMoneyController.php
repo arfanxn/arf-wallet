@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SendMoneyStoreRequest;
 use App\Services\SendMoneyService;
-use App\Models\Transaction;
 use App\Models\Wallet;
 use App\Repositories\TransactionRepository;
 use App\Repositories\WalletRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class SendMoneyController extends Controller
 {

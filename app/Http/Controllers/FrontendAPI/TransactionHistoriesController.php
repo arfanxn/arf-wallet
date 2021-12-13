@@ -67,7 +67,7 @@ class TransactionHistoriesController extends Controller
                 break;
         }
 
-        $transactions =  $transactions->simplePaginate(15);
+        $transactions =  $transactions->simplePaginate(10);
 
         $transactions->appends([
             "sortby" => $sortBy,
