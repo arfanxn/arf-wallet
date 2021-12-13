@@ -16,12 +16,13 @@
                     <small class="">{{ stringCensor($toWallet->address) }}</small>
                 </div>
             </div>
-            @if (session()->has('error'))
+
+            @error('error')
                 <div class="alert alert-danger  alert-dismissible fade show py-1 my-1">
-                    <span>{{ session('error') }}</span>
+                    <span>{{ $message }}</span>
                     <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-            @endif
+            @enderror
 
             <form action="{{ route('transaction.send-money.store', $encryptedToWalletAddress) }}" method="POST">
                 @csrf
