@@ -6,7 +6,7 @@
     <div>
         <p>Kirim Uang senilai <span class="fw-bold">{{ toIDR($transaction->amount) }}</span>
             pada <span class="fw-bold">
-                {{ $transaction->created_at->format('j F Y H:i T') }} (WIB)</span>
+                {{ $transaction->created_at->format('j F Y H:i T') }}</span>
         </p>
         <p>Dari Wallet <span class="fw-bold">{{ stringCensor($fromWallet->address) }}</span> atas nama <span
                 class="fw-bold">{{ ucwords($fromWallet->owner->name) }}</span></p>
