@@ -3,10 +3,10 @@
 namespace App\Http\Resources;
 
 
-use App\Http\Resources\TransactionCollection;
 use App\Http\Resources\TransactionResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Crypt;
 
 class WalletResource extends JsonResource
 {
@@ -19,8 +19,10 @@ class WalletResource extends JsonResource
 
     public function toArray($request)
     {
+        // return $request->all();
         return [
             "address" => $this->address,
+            "encrypted_address" => $request->has("encryptAddress") ? Crypt::encryptString($this->address) : "",
             "balance" => $this->balance,
             "user_id" => $this->user_id,
             "owner" => new UserResource($this->whenLoaded("owner")),
