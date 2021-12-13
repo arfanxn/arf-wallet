@@ -97,7 +97,7 @@
         </button>
     </div>
 
-    <div class="mx-auto text-center p-5 ">
+    <div class="d-flex justify-content-center mt-5 pt-5">
         <p class="text-white badge bg-dark p-5 fs-5">ON BUILD - COMING SOON</p>
     </div>
 
