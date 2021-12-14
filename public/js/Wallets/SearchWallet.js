@@ -1,8 +1,4 @@
 class SearchWallet {
-    // constructor () {
-
-    // }
-
     setKeyword(address) {
         this.keyword = address;
         return this;
@@ -28,12 +24,6 @@ class SearchWallet {
 
             this.wallets = await response.json();
 
-            // .then(res => res.json())
-            // .then(wallets => {
-            //     this.wallets = wallets;
-            //     console.log(wallets);
-            //     return wallets;
-            // }).catch(err => console.log(err));
         } catch (err) {
             console.log(err);
         }
@@ -87,7 +77,7 @@ if (inputSearchWallet.value.length >= SearchWallet.whenKeywordLengthIs()) {
 
 inputSearchWallet.addEventListener("input", () => {
     let value = inputSearchWallet.value;
-    inputSearchWallet.value = value.toUpperCase().replace(/[^A-Z0-9_+=]/ig, "")
+    inputSearchWallet.value = value.toUpperCase().replace(/[^A-Z0-9]/ig, "")
         .replace(/[-_=+]/g, "");
     console.log(value);
     if (value.length >= SearchWallet.whenKeywordLengthIs()) {
