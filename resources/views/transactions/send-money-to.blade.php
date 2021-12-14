@@ -24,7 +24,7 @@
                 </div>
             @enderror
 
-            <form action="{{ route('transaction.send-money.store', $encryptedToWalletAddress) }}" method="POST">
+            <form>
                 @csrf
                 <label for="input-amount" class="fw-bold text-secondary mb-2">Jumlah Kirim</label>
                 <div class="input-group ">
@@ -34,27 +34,18 @@
                         @error('amount') is-invalid @enderror"
                         placeholder="0" id="input-amount">
                 </div>
-                @error('amount')
-                    <div class="alert alert-danger  alert-dismissible fade show py-0 mt-2">
-                        <span>{{ $message }}</span>
-                        <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @enderror
+                <div id="inputErrorAmountWrapper">
+                    {{-- Loaded By JS --}}
+                </div>
 
                 <div class="mt-3">
                     <textarea class="form-control bg-white" name="description"
                         placeholder="Catatan transaksi : &#8220Untuk makan malam!&#148" rows="
                         3"></textarea>
-                    @error('description')
-                        <div class="alert alert-warning  alert-dismissible fade show py-0 mt-2">
-                            <span>{{ $message }}</span>
-                            <button type="button" class="btn-close p-1" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @enderror
+                    <div id="inputErrorDescriptionWrapper">
+                        {{-- Loaded By JS --}}
+                    </div>
                 </div>
-
-                <button class="d-none" id="btnSendMoney" type="submit">Kirim</button>
             </form>
 
             @if ($lastTransactionTo)
@@ -67,7 +58,6 @@
                 class="fixed-bottom offset-md-4 col-12 col-md-4 d-flex justify-content-between  rounded-top bg-light border-top border-dark pt-1 px-2">
                 <div class="d-flex">
 
-                    <x-modal.pin-confirmation />
                     <x-icon.wallet class="me-2"></x-icon.wallet>
                     <div class="">
                         <small class="fw-bold">Saldo</small>
@@ -75,14 +65,16 @@
                     </div>
                 </div>
                 <div class="my-auto">
-                    <button class="btn btn-secondary px-4" onclick="triggerElements(`#btnSendMoney`)">Kirim</button>
+                    <button class="btn btn-secondary px-4" id="btnProcessTransfer">Kirim</button>
                 </div>
             </footer>
         </div>
     </div>
 
+    <x-modal.pin-confirmation />
 
     <x-slot name="scripts">
-        <script src="{{ asset('js/helpers.js') }}"></script>
+        <script src="{{ asset('js/Modals/PinConfirmationModal.js') }}"></script>
+        <script src="{{ asset('js/Transactions/SendMoneyTo.js') }}"></script>
     </x-slot>
 </x-app-layout>
