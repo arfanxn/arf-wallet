@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Validator;
 
-class SendMoneyStoreRequest extends FormRequest
+class SendMoneyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,7 +22,13 @@ class SendMoneyStoreRequest extends FormRequest
      *
      * @return array
      */
+
     public function rules()
+    {
+        return [];
+    }
+
+    public function validatorRules()
     {
         return [
             "amount" => ["required", "numeric", "min:10000"],
@@ -29,11 +36,16 @@ class SendMoneyStoreRequest extends FormRequest
         ];
     }
 
+    public function validatorMake()
+    {
+        return Validator::make($this->all(), $this->validatorRules(), $this->messages());
+    }
+
     public function messages()
     {
         return [
             "amount.required" => "Masukan nominal kirim uang.",
-            "amount.min" => "Miinimal transfer adalah 10.000",
+            "amount.min" => "Minimal transfer adalah IDR 10.000",
         ];
     }
 }
