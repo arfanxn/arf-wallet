@@ -72,10 +72,9 @@ function clickRadioBtnWhereValueEqualTo(elementsName_or_elementObjects, valueSho
 }
 
 function submitForm(querySelect = null) {
-    console.log("called");
     let form = typeof querySelect == "string" ? document.querySelector(querySelect) :
         document.querySelector("form");
     if (form) form.submit()
-    else console.log(
-        new Error(`Form "${querySelect}" not found`));;
+    else throw
+    new Error(`Form "${querySelect}" not found`);
 }
