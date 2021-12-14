@@ -3,9 +3,12 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ConfirmPinController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Transactions\SendMoneyController;
 use App\Http\Controllers\Transactions\TransactionHistoryController;
+use App\Models\Transaction;
+use App\Notifications\MoneySentSuccessNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -56,7 +59,11 @@ Route::middleware("guest")->group(function () {
 Route::middleware("auth")->group(function () {
     Route::get('/', [HomeController::class, "index"])->name("home");
 
+    Route::get('/confirm-pin', [ConfirmPinController::class, "show"])->name("confirm-pin.show");
+    Route::post("confirm-pin", [ConfirmPinController::class, "handle"])->name("confirm-pin.handle");
+
     Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
+
         Route::get("send-money", ["uses" => SendMoneyController::class  . "@index", "as" => "send-money"]);
         Route::get("send-money/to/{address}", ["uses" => SendMoneyController::class . "@create", "as" =>  "send-money.create"]);
         Route::post("send-money/to/{address}", [
@@ -111,6 +118,12 @@ Route::middleware("auth")->group(function () {
 
 // TEST RENDER 
 Route::view("test-view", "accounts.index");
+
+Route::get("view-mail", function () {
+    // $transaction = app("AuthWallet")->receivedTransactions()->latest()->first();
+    $transaction = Transaction::latest()->first();
+    return (new MoneySentSuccessNotification($transaction))->toMail("arfan@gm.com");
+});
 
 // TEST MAIL 
 Route::get(
