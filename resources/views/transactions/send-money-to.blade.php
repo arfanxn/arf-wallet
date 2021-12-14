@@ -4,7 +4,7 @@
         {{ $toWallet->owner->name }}
     </x-transaction-header>
 
-    <div class="position-absolute col-4 mt-5" style="z-index: 99999">
+    <div class="position-absolute col-12 col-md-4 mt-5" style="z-index: 99999">
         <div class="bg-white mx-auto rounded px-2 py-2" style="width: 95%;">
             <div
                 class="d-flex border-bottom border-secondary pt-1 pb-3 mb-2 text-decoration-none text-dark align-middle">
@@ -66,6 +66,8 @@
             <footer
                 class="fixed-bottom offset-md-4 col-12 col-md-4 d-flex justify-content-between  rounded-top bg-light border-top border-dark pt-1 px-2">
                 <div class="d-flex">
+
+                    <x-modal.pin-confirmation />
                     <x-icon.wallet class="me-2"></x-icon.wallet>
                     <div class="">
                         <small class="fw-bold">Saldo</small>
@@ -79,7 +81,8 @@
         </div>
     </div>
 
+
     <x-slot name="scripts">
-        <script src="{{ asset('js/helper.js') }}"></script>
+        <script src="{{ asset('js/helpers.js') }}"></script>
     </x-slot>
 </x-app-layout>
