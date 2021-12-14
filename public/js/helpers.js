@@ -75,6 +75,7 @@ function submitForm(querySelect = null) {
     let form = typeof querySelect == "string" ? document.querySelector(querySelect) :
         document.querySelector("form");
     if (form) form.submit()
-    else throw
-    new Error(`Form "${querySelect}" not found`);
+    else {
+        throw new Error(`Form "${querySelect}" not found`);
+    }
 }
