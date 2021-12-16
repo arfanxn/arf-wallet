@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Transaction;
+use Illuminate\Support\Str;
+use App\Models\User;
 use App\Models\Wallet;
 
 class WalletRepository
@@ -23,5 +25,32 @@ class WalletRepository
             $index += 1;
         };
         return $recentWallets;
+    }
+
+    public static function getWalletByUserIDorCreateIfNotExist(User|string|int $user_or_id)
+    {
+        $user_id = ($user_or_id instanceof Wallet) ? $user_or_id = $user_or_id->id :
+            $user_or_id;
+        return  Wallet::where("user_id", $user_id)->first() ?? static::createByUserID($user_id);
+    }
+
+    public static function createByUserID(User|string|int $user_or_id)
+    {
+        $user_id = ($user_or_id instanceof Wallet) ? $user_or_id = $user_or_id->id :
+            $user_or_id;
+
+        return Wallet::create([
+            "user_id" => $user_or_id,
+            "address" => strtoupper(Str::random(16)),
+            "amount" => 0,
+        ]);
+    }
+
+    public static function createByUserIDandGetCreated(User|string|int $user_or_id)
+    {
+        $user_id = ($user_or_id instanceof Wallet) ? $user_or_id = $user_or_id->id :
+            $user_or_id;
+        static::createByUserID($user_id);
+        return Wallet::where("user_id", $user_id)->first();
     }
 }
