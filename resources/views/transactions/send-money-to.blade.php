@@ -18,6 +18,8 @@
             </div>
 
             <div id="serverErrorWrapper">
+                {{-- This DIV used for wrapping error alert that will be printed if server error 
+                    (Printed By Javascript DOM) --}}
             </div>
 
 
