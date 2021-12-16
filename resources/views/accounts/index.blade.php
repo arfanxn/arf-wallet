@@ -22,18 +22,18 @@
                 <div class="ps-1 py-1">
                     <x-icon.up-arrow-green />
                 </div>
-                <div class="ms-2">
+                <div class="ms-2 pe-2">
                     <small class="d-block">Penghasilan</small>
-                    <span class="">Rp200000</span>
+                    <span id="incomeTotal" class="text-break">Loading</span>
                 </div>
             </div>
             <div class="w-50  border-end border-secondary d-flex ">
                 <div class="ps-1 py-1">
                     <x-icon.down-arrow-orange />
                 </div>
-                <div class="ms-2">
+                <div class="ms-2 pe-2">
                     <small class="d-block">Pengeluaran</small>
-                    <span class="">Rp200000</span>
+                    <span id="expenseTotal" class="text-break">Loading</span>
                 </div>
             </div>
         </div>
@@ -77,6 +77,8 @@
 
     </main>
 
-
+    <x-slot name="scripts">
+        <script src="{{ asset('js/Accounts/LoadIncomeAndExpenseThisMonth.js') }}"></script>
+    </x-slot>
 
 </x-app-layout>
