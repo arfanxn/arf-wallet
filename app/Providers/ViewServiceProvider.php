@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Repositories\WalletRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -31,7 +32,8 @@ class ViewServiceProvider extends ServiceProvider
             "transactions.detail", "accounts.index", "components.modal.wallet-info",
             "transactions.send-money-to"
         ], function ($view) {
-            $view->with("authWallet", Auth::user()->wallet);
+            $view->with("authWallet", app("AuthWallet") ??
+                WalletRepository::createByUserIDandGetCreated(Auth::user()));
         });
     }
 }
