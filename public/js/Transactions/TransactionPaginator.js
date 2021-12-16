@@ -89,7 +89,9 @@ class TransactionPaginator {
             </a>`
             });
         } else {
-            transactionPaginationWrapper.innerHTML = `<h1>Tidak Ditemukan</h1><h1>Tidak Ditemukan</h1><h1>Tidak Ditemukan</h1>`
+            transactionPaginationWrapper.innerHTML =
+                `<div class="d-flex mt-4 justify-content-center badge bg-info rounded-0">
+                <h1 class="text-center my-auto fw-bold">Tidak Ditemukan</h1></div>`
         }
         return this;
     }
@@ -113,15 +115,18 @@ class TransactionPaginator {
                      href="#" rel="prev">Sebelumnya</a>
                 </li>`
         }
-        htmlString += `<li class="page-item">
+
+        if (this.getPaginateNextURL()) {
+            htmlString += `<li class="page-item">
                     <a id="paginatorTransactionNextURL" class="btnPrevNextTransactionPagination
                      page-link" href="#" data-href="${this.getPaginateNextURL()}" 
                         rel="next">Selanjutnya</a>
-                </li>`
-
-        // `<li class="page-item disabled" aria-disabled="true">
-        //     <span class="page-link">Selanjutnya</span>
-        // </li>`
+                </li>`;
+        } else {
+            htmlString += `<li class="page-item disabled" aria-disabled="true">
+            <span class="page-link">Selanjutnya</span>
+        </li>`;
+        }
 
         htmlString += `</ul></nav>`;
 
