@@ -4,7 +4,11 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Models\Wallet;
+use App\Repositories\WalletRepository;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class UserObserver
 {
@@ -16,12 +20,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        Wallet::create([
-            "user_id" => $user->id,
-            "address" => strtoupper(Str::random(16)),
-            // "balance" => $user->id == 1 ? 1844674407370955161 : 0,
-            "balance" => 99999999999999,
-        ]);
+        WalletRepository::createByUserID($user);
     }
 
     /**
