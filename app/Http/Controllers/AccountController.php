@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        $wallet = Auth::user()->wallet;
+        $wallet = app("AuthWallet");
         return view("accounts.index", compact("wallet"));
     }
 
