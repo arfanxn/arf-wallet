@@ -60,15 +60,14 @@ class RegisterController extends Controller
             "password" => bcrypt($request->pin_number)
         ]);
 
-        // event()
-
-        Auth::attempt([
+        $isLoginSuccess =  Auth::attempt([
             "email" => $request->session()->pull("email"),
             "password" => $request->pin_number,
         ], remember: 1);
 
-        return redirect()->to(RouteServiceProvider::HOME())
+        return $isLoginSuccess ? redirect()->to(RouteServiceProvider::HOME())
             ->with(["success" =>
-            "Akun anda telah teregistrasi, kini anda dapat login dengan Email."]);
+            "Akun anda telah teregistrasi, kini anda dapat login dengan Email."])
+            :  redirect()->route("register.create");
     }
 }
