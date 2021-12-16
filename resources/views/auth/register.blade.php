@@ -8,10 +8,20 @@
     <main class="bg-primary w-100 pt-5" style="height: 100vh">
 
         <div class="text-center">
-            <p class="text-white "><span class="fw-bold">Email</span> Kamu belum terdaftar,
+            <p class="text-white mb-4"><span class="fw-bold">Email</span> Kamu belum terdaftar,
                 <br>Silahkan <span class="fw-bold">Daftar</span> untuk lanjut.
             </p>
-            <form method="POST" class="mt-4 text-center position-relative w-100 "
+
+            @error('server_error')
+                <div class="px-5 py-0 my-0 d-block">
+                    <div class="alert alert-danger rounded  alert-dismissible fade show py-0 mt-1" role="alert">
+                        <strong>{{ $message }}</strong>
+                        <button type="button" class="btn-close  p-1" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            @enderror
+
+            <form method="POST" class="text-center position-relative w-100 "
                 action="{{ route('register.handleCreate') }}" id="form-email"> @csrf
                 <div class="input-group px-5">
                     <span class="input-group-text  ">
@@ -51,7 +61,7 @@
                     <span class="input-group-text bg-white ">
                         PIN
                     </span>
-                    <input name="pin_number" value="{{ old('pin_number') }}" type="password" autocomplete="off"
+                    <input name="pin_number" type="password" autocomplete="off"
                         class="form-control bg-white text-dark @error('pin_number') is-invalid @enderror"
                         placeholder="123456">
                 </div>
