@@ -37,6 +37,13 @@ class Laravel {
     }
 
     static toDateTimeString(dateTime) {
-        return dateTime.replace(/[T]/, " ").replace(/[.].*/g, "");
+        return (new Date(dateTime)).toLocaleString("en-UK", {
+            year: "numeric",
+            month: "short",
+            day: '2-digit',
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        });
     }
 }
