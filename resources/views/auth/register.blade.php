@@ -12,14 +12,16 @@
                 <br>Silahkan <span class="fw-bold">Daftar</span> untuk lanjut.
             </p>
 
-            @error('server_error')
+            {{-- @error('server_error')
                 <div class="px-5 py-0 my-0 d-block">
                     <div class="alert alert-danger rounded  alert-dismissible fade show py-0 mt-1" role="alert">
                         <strong>{{ $message }}</strong>
                         <button type="button" class="btn-close  p-1" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 </div>
-            @enderror
+            @enderror --}}
+
+            <x-auth.input-error-alert error="server_error" />
 
             <form method="POST" class="text-center position-relative w-100 "
                 action="{{ route('register.handleCreate') }}" id="form-email"> @csrf
