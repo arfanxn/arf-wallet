@@ -3,12 +3,8 @@
 namespace App\Observers;
 
 use App\Models\User;
-use App\Models\Wallet;
 use App\Repositories\WalletRepository;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+
 
 class UserObserver
 {
@@ -20,7 +16,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        WalletRepository::createByUserID($user);
+        WalletRepository::createByUserID($user->id);
     }
 
     /**
