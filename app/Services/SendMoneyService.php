@@ -12,7 +12,7 @@ class SendMoneyService
 {
     private $amount, $charge, $description,  $fromWallet, $forWallet;
 
-    public function setAmount(float|int $amount)
+    public function setAmount(float|int|string $amount)
     {
         $this->amount = $amount;
         return $this;
@@ -30,63 +30,60 @@ class SendMoneyService
         return $this;
     }
 
-    public function setFromWallet(Wallet|string $fromWallet = null) //wallet object or address
+    public function setFromWallet(Wallet|string|null $fromWallet = null) //wallet object or address
     {
-        if (is_null($fromWallet)) $this->fromWallet = (app()->make("AuthWallet"))->address;
+        if (is_null($fromWallet)) $this->fromWallet = (app("AuthWallet"))->address;
         elseif ($fromWallet instanceof Wallet) $this->fromWallet = $fromWallet->address;
         elseif ($fromWallet) $this->fromWallet = $fromWallet;
 
         return $this;
     }
 
-    public function setToWallet(Wallet|string $toWallet) //wallet object or address
+    public function setToWallet(string $toWallet) //wallet object or address
     {
-        $this->forWallet = $toWallet instanceof Wallet ?  $toWallet->address
-            : $toWallet;
+        $this->forWallet = $toWallet;
 
         return $this;
     }
 
     public function transfer()
     {
-        DB::beginTransaction();
         try {
+            DB::beginTransaction();
             $amount = $this->amount;
             $charge = $this->charge ?? 0;
+            $amountAndCharge = intval($amount) + intval($charge);
             $description = $this->description ?? "";
             $toWallet = $this->forWallet;
             $fromWallet = $this->fromWallet;
+
+            // if the user send to the same wallet, let say wallet-id-1 send to wallet-id-1 ,throw an error.
+            if ($fromWallet ==  $toWallet)
+                throw new TransferException("Tidak dapat mengirim ke Wallet yang sama!");
+            // end
 
             // minumum transfer must be at least "IDR 10.000"
             if ($amount < 10000) throw new TransferException("Minimal transfer adalah IDR 10.000");
             // end
 
-            // check is fromWallet valid/exist and balance enough for doing this transfer proccess
-            $fromWallet = Wallet::where(function ($q) use ($fromWallet) {
-                $q->where("address", $fromWallet);
-            })->where("balance", ">=", ($amount + $charge));
-            !$fromWallet->exists() ? throw new TransferException("Saldo Wallet kamu tidak cukup!")
-                // if exist -> subtract the fromWallet balance
-                : $fromWallet->update(["balance" => DB::raw("balance - " . ($amount + $charge))]);
+            $fromWalletData = Wallet::where("address", $fromWallet)
+                ->where("balance", ">=", strval($amountAndCharge))->first();
+
+            // check is fromWallet valid/exist and balance enough for doing this transfer process
+            // if exist -> subtract the fromWallet balance
+            if ($fromWalletData) {
+                $fromWalletData->decrement("balance", strval($amountAndCharge));
+                $fromWalletData->save();
+            } else throw new TransferException("Saldo Wallet kamu tidak cukup!");
             // end
 
-
-            // if the user send to the same wallet, let say wallet-id-1 send to wallet-id-1 ,throw an error.
-            $fromWalletData = $fromWallet->first(); //get the fromWallet data
-            if ($fromWalletData->address ==  $toWallet)
-                throw new TransferException("Tidak dapat mengirim ke Wallet yang sama!");
-            // end
-
+            $toWalletData = Wallet::where("address", $toWallet)->first();
             // check is toWallet exist and valid
-            $toWallet = Wallet::where(function ($q) use ($toWallet) {
-                $q->where("address", $toWallet);
-            });
-            !$toWallet->exists() ? throw new
-                TransferException("Alamat Wallet tujuan tidak ditemukan atau tidak valid!")
-                // if valid and also exist , add the toWallet balance 
-                : $toWallet->update(["balance" => DB::raw("balance + " . $amount)]);
-            // after check get the toWallet data
-            $toWalletData = $toWallet->first();
+            // if valid and also exist , add the toWallet balance 
+            if ($toWalletData) {
+                $toWalletData->increment("balance", strval($amount));
+                $toWalletData->save();
+            } else throw new TransferException("Alamat Wallet tujuan tidak ditemukan atau tidak valid!");
             // end 
 
 
@@ -101,7 +98,6 @@ class SendMoneyService
                 "charge" => $charge,
                 "description" => $description,
             ]); // end 
-
 
             DB::commit();
             return [
@@ -120,9 +116,8 @@ class SendMoneyService
             DB::rollBack();
             return [
                 "status" => false,
-                "message" => $e->getMessage(),
+                "message" => "Something Went Wrong",
             ];
-            // return $e->getMessage();
         }
     }
 }
