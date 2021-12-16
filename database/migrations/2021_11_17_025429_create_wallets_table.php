@@ -18,7 +18,7 @@ class CreateWalletsTable extends Migration
             $table->id();
             $table->foreignId("user_id")->constrained("users", "id")
                 ->onDelete("cascade")->onUpdate("cascade");
-            $table->string("address")->unique()->default(Str::random());
+            $table->string("address")->unique();
             $table->unsignedBigInteger("balance")->default(0);
             $table->timestamps();
         });
