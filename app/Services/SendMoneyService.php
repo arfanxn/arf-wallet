@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\TransferException;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use App\Responses\ErrorMessageResponse;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 
@@ -116,7 +117,7 @@ class SendMoneyService
             DB::rollBack();
             return [
                 "status" => false,
-                "message" => "Something Went Wrong",
+                "message" => ErrorMessageResponse::serverError(),
             ];
         }
     }
