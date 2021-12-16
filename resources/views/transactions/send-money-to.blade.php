@@ -17,12 +17,9 @@
                 </div>
             </div>
 
-            @error('error')
-                <div class="alert alert-danger  alert-dismissible fade show py-1 my-1">
-                    <span>{{ $message }}</span>
-                    <button type="button" class="btn-close p-1" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @enderror
+            <div id="serverErrorWrapper">
+            </div>
+
 
             <form>
                 @csrf
