@@ -4,7 +4,7 @@
         Detail Transaksi
     </x-transaction-header>
 
-    <div class="position-absolute col-4 mt-5" style="z-index: 99999">
+    <div class="position-absolute col-12 col-md-4  mt-5" style="z-index: 99999">
         <div class="bg-white mx-auto rounded px-0 " style="width: 95%;">
             <div class="px-2 pb-5 ">
                 <div class="text-center py-3 ">
