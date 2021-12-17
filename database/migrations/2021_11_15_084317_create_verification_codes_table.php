@@ -15,7 +15,7 @@ class CreateVerificationCodesTable extends Migration
     {
         Schema::create('verification_codes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")->constrained()
+            $table->foreignId("user_id")->nullable()->constrained("users", "id")
                 ->onDelete("cascade")->onUpdate("cascade");
             $table->string("email", 255)->nullable()->constrained("users", "email")
                 ->onUpdate("cascade");
