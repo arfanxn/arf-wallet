@@ -21,7 +21,7 @@ class ProcessChangePINController extends Controller
         ]);
 
         return $isUpdateSucces ? response()->json([
-            "status" => true, "succes" => true, "message" => "PIN Berhasil Diubah"
+            "status" => true, "succes" => true, "message" => "PIN Berhasil diubah"
         ]) : response()->json([
             "status" => false, "error_message" => ErrorMessageResponse::serverError()
         ]);
