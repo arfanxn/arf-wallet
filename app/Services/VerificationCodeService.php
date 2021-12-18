@@ -34,4 +34,20 @@ class VerificationCodeService
             VerificationCodeRepository::getByUserOrCreateIfExpireThenGet($user);
         return $code  == $verificationCode;
     }
+
+    public static function sendByEmail($email)
+    {
+        $code =
+            VerificationCodeRepository::getByEmailOrCreateIfExpireThenGet($email);
+
+        Notification::route('mail', $email)
+            ->notify(new VerificationCodeNotification($code));
+    }
+
+    public static function verifyByEmail(string $email, int $code): bool
+    {
+        $verificationCode =
+            VerificationCodeRepository::getByEmailOrCreateIfExpireThenGet($email);
+        return $code  == $verificationCode;
+    }
 }
