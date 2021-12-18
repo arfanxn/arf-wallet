@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class VerificationCodeNotification extends Notification
+class VerificationCodeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -22,6 +22,7 @@ class VerificationCodeNotification extends Notification
     public function __construct($code)
     {
         $this->code = $code;
+        $this->delay(now()->addSeconds(5));
     }
 
     /**

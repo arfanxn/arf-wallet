@@ -32,7 +32,9 @@ class VerificationCodeService
     {
         $verificationCode =
             VerificationCodeRepository::getByUserOrCreateIfExpireThenGet($user);
-        return $code  == $verificationCode;
+        $isMatch = $code  == $verificationCode;
+        if ($isMatch) VerificationCode::where("user_id", $user)->delete();
+        return $isMatch;
     }
 
     public static function sendByEmail($email)
@@ -48,6 +50,8 @@ class VerificationCodeService
     {
         $verificationCode =
             VerificationCodeRepository::getByEmailOrCreateIfExpireThenGet($email);
-        return $code  == $verificationCode;
+        $isMatch = $code  == $verificationCode;
+        if ($isMatch) VerificationCode::where("email", $email)->delete();
+        return $isMatch;
     }
 }
