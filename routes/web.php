@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Auth\AccountSettingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -80,9 +80,26 @@ Route::middleware("auth")->group(function () {
     });
 
     Route::group(["prefix" => "account", "as" => "account."], function () {
-        Route::get("", [
-            "uses" => AccountController::class . "@index", "as" => "index"
+        Route::view("", "accounts.index")->name("index");
+        Route::get("settings", [
+            "uses" => AccountSettingController::class . "@index",
+            "as" => "settings.index"
         ]);
+        Route::group(['prefix' => "setting"], function () {
+            Route::put("change-profile-picture", ["uses" =>  AccountSettingController::class . "@changeProfilePicture", "as" => "setting.change-profile-pict"]);
+            Route::get("change-pin", [
+                "uses" => AccountSettingController::class . "@showChangePin",
+                "as" => "setting.change-pin"
+            ]);
+            Route::get("change-email", [
+                "uses" => AccountSettingController::class . "@showChangeEmail",
+                "as" => "setting.change-email.edit"
+            ]);
+            Route::get("change-fullname", [
+                "uses" => AccountSettingController::class . "@showChangeFullname",
+                "as" => "setting.change-fullname.edit"
+            ]);
+        });
     });
 });
 
