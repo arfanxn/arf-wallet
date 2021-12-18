@@ -10,9 +10,9 @@
         </div>
         <div class="">
             <h6 class="my-1 fw-bold">{{ strtoupper(auth()->user()->name) }}</h6>
-            <small class="align-top">{{ auth()->user()->phone_number }}
+            <small class="align-top">{{ stringCensor($authWallet->address) }}
                 <span
-                    class="text-decoration-underline fst-italic font-monospace  fw-bold ms-1">{{ auth()->user()->email_verified_at ? 'PREMIUM' : '' }}</span></small>
+                    class="text-decoration-underline fst-italic font-monospace  fw-bold ms-1">{{ auth()->user()->email_verified_at ? 'PREMIUM' : 'ORDINARY' }}</span></small>
         </div>
     </header>
 
@@ -45,7 +45,7 @@
                 <x-icon.wallet /> <span class="ms-1">Saldo</span>
             </div>
             <div class="align-middle pe-1">
-                <span>{{ toIDR($wallet->balance) }}</span>
+                <span>{{ toIDR($authWallet->balance) }}</span>
                 <a href="" class="text-decoration-none text-dark">
                     &#10095;</a>
             </div>
@@ -57,7 +57,7 @@
                 <span class="ms-1">Pengaturan</span>
             </div>
             <div class="align-middle pe-1">
-                <a href="" class="text-decoration-none text-dark">
+                <a href="{{ route('account.settings.index') }}" class="text-decoration-none text-dark">
                     &#10095;</a>
             </div>
         </div>
