@@ -9,7 +9,8 @@
             <div
                 class="d-flex border-bottom border-secondary pt-1 pb-3 mb-2 text-decoration-none text-dark align-middle">
 
-                <x-profile-picture class="mx-1" width="50" height="50" />
+                <x-profile-picture src="{{ $toWallet->owner->profile_picture }}" class="mx-1" width="50"
+                    height="50" />
 
                 <div class="my-auto ms-2">
                     <h6 class="fw-bold m-0 p-0">{{ $toWallet->owner->name }}</h6>

@@ -44,7 +44,8 @@ class SearchWallet {
             wallets.forEach(wallet => {
                 searchWalletResultsWrapper.innerHTML += `<a href="/transaction/send-money/to/${wallet.encrypted_address}"
                     class="d-flex justify-content-between py-3 ${index < 1 ? "" : " border-bottom"} border-secondary  text-decoration-none text-dark align-middle">
-                    <div><img class="rounded-circle border border-white border-2" src="/accounts/profile_picture/arfan.jpg" width="50" height="50">
+                    <div><img class="rounded-circle border border-white border-2" 
+                    src="/accounts/profile_pictures/${wallet.owner["profile_picture"]}" width="50" height="50">
                         <span class="my-auto ">${wallet.owner["name"]}</span>
                     </div>
                     <span class="my-auto me-1">${wallet.address}</span>

@@ -20,7 +20,8 @@
                 <a href="{{ route('transaction.send-money-to', Crypt::encryptString($wallet->address)) }}"
                     class="d-flex justify-content-between py-3 border-bottom border-secondary  text-decoration-none text-dark align-middle">
                     <div>
-                        <x-profile-picture class="mx-1" width="50" height="50" />
+                        <x-profile-picture src="{{ $wallet->owner->profile_picture }}" class="mx-1"
+                            width="50" height="50" />
                         <span class="my-auto ">{{ $wallet->owner->name }}</span>
                     </div>
 
