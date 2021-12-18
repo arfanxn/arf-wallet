@@ -6,7 +6,7 @@
 
     <header class="d-flex justify-content-start bg-primary text-white pb-2 ">
         <div class="px-3">
-            <x-profile-picture />
+            <x-profile-picture src="{{ auth()->user()->profile_picture }}" />
         </div>
         <div class="">
             <h6 class="my-1 fw-bold">{{ strtoupper(auth()->user()->name) }}</h6>
