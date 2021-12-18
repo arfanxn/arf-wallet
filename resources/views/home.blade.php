@@ -6,7 +6,7 @@
     <div
         class="d-flex pt-3 px-2 mx-auto justify-content-around transaction-wrapper text-center border border-dark rounded-bottom bg-light">
         <div class="">
-            <a class="text-decoration-none text-dark" href="">
+            <a class="text-decoration-none text-dark" href="{{ route('wallet-topup.create') }}">
                 <x-icon.top-up></x-icon.top-up>
                 <p>Isi Saldo</p>
             </a>

@@ -46,7 +46,7 @@
             </div>
             <div class="align-middle pe-1">
                 <span>{{ toIDR($authWallet->balance) }}</span>
-                <a href="" class="text-decoration-none text-dark">
+                <a href="{{ route('wallet-topup.create') }}" class="text-decoration-none text-dark">
                     &#10095;</a>
             </div>
         </div>

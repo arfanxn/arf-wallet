@@ -17,7 +17,8 @@
                     <h5>{{ stringCensor($authWallet->address) }}</h5>
                 </div>
                 <div class="">
-                    <a href="" class="float-end badge bg-primary text-decoration-none text-white fs-6 mt-1">+ TOP UP</a>
+                    <a href="{{ route('wallet-topup.create') }}"
+                        class="float-end badge bg-primary text-decoration-none text-white fs-6 mt-1">+ TOP UP</a>
                     <p class="m-0 fs-5">Saldo</p>
                     <small class="align-top d-inline">Rp</small>
                     <p class="d-inline align-baseline">{{ toCurrency($authWallet->balance) }}</p>
