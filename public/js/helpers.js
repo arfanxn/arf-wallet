@@ -79,3 +79,21 @@ function submitForm(querySelect = null) {
         throw new Error(`Form "${querySelect}" not found`);
     }
 }
+
+
+function throttleInputClick(input, activeAfter = 5000) {
+    if (typeof input == "string") input = document.querySelector(input);
+
+    console.log(input);
+
+    if (!input.hasAttribute('data-prevent-double-click')) {
+        input.setAttribute('data-prevent-double-click', true);
+        input.setAttribute('disabled', true);
+        document.body.append("Foo!");
+    }
+
+    setTimeout(() => {
+        input.removeAttribute('disabled');
+        input.removeAttribute('data-prevent-double-click');
+    }, activeAfter);
+}
