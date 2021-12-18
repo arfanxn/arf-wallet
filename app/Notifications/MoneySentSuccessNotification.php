@@ -18,6 +18,8 @@ class MoneySentSuccessNotification extends Notification implements ShouldQueue
      * @return void
      */
     private $transaction;
+    public $tries = 3;
+
     public function __construct(Transaction $transaction)
     {
         $this->transaction = $transaction;
