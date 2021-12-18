@@ -45,7 +45,7 @@ class WalletRepository
         return Wallet::create([
             "user_id" => strval($user_id),
             "address" => strtoupper(Str::random(16)),
-            "amount" => 0,
+            "balance" => 0,
         ]);
     }
 
