@@ -208,7 +208,8 @@ btnCloseModalTransactionFilter.addEventListener("click", () => {
 });
 
 radioBtnSorting.forEach(elem => {
-    elem.addEventListener("change", () => {
+    elem.addEventListener("change", (e) => {
+        throttleInputClick(e.target, 5000);
         const sortBy = getCheckedRadioBtnValue(radioBtnSorting),
             transactionType = getCheckedRadioBtnValue("transactions-filter-type"),
             transactionDate = getCheckedRadioBtnValue("transactions-filter-date");
