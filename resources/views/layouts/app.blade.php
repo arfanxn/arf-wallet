@@ -40,6 +40,8 @@
 
 
     {!! $scripts ?? '' !!}
+
+    <script src="{{ asset('js/Security.js') }}"></script>
 </body>
 
 </html>
