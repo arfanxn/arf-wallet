@@ -1,8 +1,8 @@
 <x-app-layout title="Detail Transaksi" :navbar-top="false" :navbar-bottom="false">
 
-    <x-transaction-header route="{{ route('transaction.history') }}" class="h-25">
+    <x-navbar-withBackBtn route="{{ route('transaction.history') }}" class="h-25">
         Detail Transaksi
-    </x-transaction-header>
+    </x-navbar-withBackBtn>
 
     <div class="position-absolute col-12 col-md-4  mt-5" style="z-index: 99999">
         <div class="bg-white mx-auto rounded px-0 " style="width: 95%;">

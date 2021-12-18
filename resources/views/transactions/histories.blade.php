@@ -1,8 +1,8 @@
 <x-app-layout title="Riwayat Transaksi" :navbar-top="false" :navbar-bottom="false">
 
-    <x-transaction-header route="{{ route('home') }}">
+    <x-navbar-withBackBtn route="{{ route('home') }}">
         Riwayat Transaksi
-    </x-transaction-header>
+    </x-navbar-withBackBtn>
 
 
     <main id="transaction-pagination-wrapper" class="bg-light mt-3 pt-3  overflow-auto">

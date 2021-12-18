@@ -1,8 +1,8 @@
 <x-app-layout title="Kirim Ke {{ $toWallet->owner->name }}" :navbar-top="false" :navbar-bottom="false">
 
-    <x-transaction-header class="h-25" route="{{ route('transaction.send-money') }}">Kirim ke
+    <x-navbar-withBackBtn class="h-25" route="{{ route('transaction.send-money') }}">Kirim ke
         {{ $toWallet->owner->name }}
-    </x-transaction-header>
+    </x-navbar-withBackBtn>
 
     <div class="position-absolute col-12 col-md-4 mt-5" style="z-index: 99999">
         <div class="bg-white mx-auto rounded px-2 py-2" style="width: 95%;">

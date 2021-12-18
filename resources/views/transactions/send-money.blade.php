@@ -1,5 +1,5 @@
 <x-app-layout title="Kirim Uang" :navbar-top="false" :navbar-bottom="false">
-    <x-transaction-header class="h-25" route="{{ route('home') }}">Kirim Uang</x-transaction-header>
+    <x-navbar-withBackBtn class="h-25" route="{{ route('home') }}">Kirim Uang</x-navbar-withBackBtn>
 
     <div class="position-absolute col-md-4 col-12 mt-5  " style="z-index: 99999">
         <div class="bg-white mx-auto rounded px-2 py-2 " style="width: 95%;">
