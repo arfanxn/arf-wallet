@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Transactions\TopupWalletBalanceController;
 use App\Http\Controllers\Auth\AccountSettingController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -78,6 +79,8 @@ Route::middleware("auth")->group(function () {
             "uses" => TransactionHistoryController::class . "@show", "as" => "detail"
         ]);
     });
+
+    Route::get("wallet/topup", [TopupWalletBalanceController::class, "create"])->name('wallet-topup.create');
 
     Route::group(["prefix" => "account", "as" => "account."], function () {
         Route::view("", "accounts.index")->name("index");
