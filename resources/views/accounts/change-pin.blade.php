@@ -1,7 +1,7 @@
-<x-app-layout title="Ganti PIN" :navbar-top="false" :navbar-bottom="false">
+<x-app-layout title="Ubah PIN" :navbar-top="false" :navbar-bottom="false">
 
     <x-navbar-withBackBtn route="{{ route('account.settings.index') }}">
-        Ganti PIN
+        Ubah PIN
     </x-navbar-withBackBtn>
 
     <main id="main" class="mt-5 pt-3">

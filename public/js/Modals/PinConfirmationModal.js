@@ -105,12 +105,12 @@ document.getElementById("btnCloseModalPinConfirmation").addEventListener("click"
     PinConfirmationModal.hide()
 });
 
-let btnOpenModalPinConfirmation = document.getElementById("btnOpenModalPinConfirmation")
-if (btnOpenModalPinConfirmation)
-    btnOpenModalPinConfirmation.addEventListener("click", () => PinConfirmationModal.show());
+// let btnOpenModalPinConfirmation = document.getElementById("btnOpenModalPinConfirmation")
+// if (btnOpenModalPinConfirmation)
+//     btnOpenModalPinConfirmation.addEventListener("click", () => PinConfirmationModal.show());
 
 
-document.getElementsByName("pin_number")[0].addEventListener("change", e => {
-    let value = e.target.value;
-    e.target.value = value.replace(/[^\d]/ig, "");
+document.getElementsByName("pin_number")[0].addEventListener("input", e => {
+    if (e.target.value.length > 8) e.target.value = e.target.value.slice(0, -1);
+    e.target.value = e.target.value.replace(/[^\d]/ig, "");
 });
