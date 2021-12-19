@@ -4,79 +4,39 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Providers\RouteServiceProvider;
+use App\Responses\ErrorMessageResponse;
+use App\Services\VerificationCodeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmailVerificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function create(Request $request)
     {
-        //
+        return view("auth.email-verification");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function verify(Request $request)
     {
-        //
-    }
+        $validated = $request->validate([
+            "verification_code" => "required|numeric|digits_between:6,6"
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+        $isCodeMatch = VerificationCodeService::verifyByEmail(
+            Auth::user()->email,
+            intval($validated["verification_code"])
+        );
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        //
+        if ($isCodeMatch) {
+            User::where("id", Auth::id())
+                ->update(["email_verified_at" => now()->toDateTimeString()]);
+            return redirect()->to(RouteServiceProvider::HOME())
+                ->with(["success" => "Verifikasi Email berhasil!"]);
+        } else {
+            return redirect()->to(route("email-verification.create"))->withErrors([
+                "verification_code" => ErrorMessageResponse::verificationCode()
+            ]);
+        }
     }
 }
