@@ -26,12 +26,21 @@ if (!function_exists("toCurrency")) {
 }
 
 if (!function_exists("stringCensor")) {
-    function stringCensor($string)
+    function stringCensor($string, $censorAll = false)
     {
-        $length = strlen($string) - floor(strlen($string) / 2);
-        $start = floor($length / 2);
-        $replacement = str_repeat('*', $length);
-        return substr_replace($string, $replacement, $start, $length);
+        if ($censorAll) {
+            $strLength = strlen($string);
+            $censoredStr = "";
+            for ($i = 0; $i < $strLength; $i++) {
+                $censoredStr .=  "*";
+            }
+            return $censoredStr;
+        } else {
+            $length = strlen($string) - floor(strlen($string) / 2);
+            $start = floor($length / 2);
+            $replacement = str_repeat('*', $length);
+            return substr_replace($string, $replacement, $start, $length);
+        }
     }
 }
 
