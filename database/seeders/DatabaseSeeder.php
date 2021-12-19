@@ -20,11 +20,10 @@ class DatabaseSeeder extends Seeder
             "email" => "arfan@gm.com",
             "password" => bcrypt("111222"),
         ]);
-        Wallet::where("user_id", "<=", 5)->update(["balance" => "18446744073709551615"]);
 
-        \App\Models\User::factory(200)->create();
+        \App\Models\User::factory(300)->create();
 
-        \App\Models\Transaction::factory(1000)->create();
+        \App\Models\Transaction::factory(2000)->create();
 
         // for ($i = 0; $i < 10000; $i++) {
         //     try {
@@ -40,5 +39,7 @@ class DatabaseSeeder extends Seeder
         // // for ($i = 0; $i < 1000; $i++) {
         // //     \App\Models\Transaction::factory(10000)->create();
         // // }
+
+        Wallet::where("user_id", "<=", 5)->update(["balance" => "18446744073709551615"]);
     }
 }
