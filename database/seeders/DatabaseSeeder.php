@@ -2,11 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Transaction;
 use App\Models\Wallet;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
