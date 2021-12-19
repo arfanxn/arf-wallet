@@ -31,6 +31,12 @@ class AccountSettingController extends Controller
         return view("accounts.change-pin");
     }
 
+    public function logout()
+    {
+        Auth::logout();
+        return redirect()->route("login.show");
+    }
+
     public function changeProfilePicture(Request $request)
     {
         $request->validate([
@@ -45,6 +51,6 @@ class AccountSettingController extends Controller
 
         User::where("id", Auth::id())->update(['profile_picture' => $imgName]);
 
-        return redirect()->route("account.settings.index")->with(["success" => "Foto Profile berhasil di ubah"]);
+        return redirect()->route("account.settings.index")->with(["success" => "Foto Profil berhasil di ubah"]);
     }
 }
