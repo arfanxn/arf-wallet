@@ -14,7 +14,7 @@ class LoginController extends Controller
 {
     public function show()
     {
-        Session::forget("phone_number");
+        Session::forget("email");
         return view("auth.login");
     }
 
