@@ -104,6 +104,6 @@
     <div class="m-5 p-5 w-100" style="height: 500px"></div>
 
     <x-slot name="scripts">
-        <script src="{{ asset('home/js/home.js') }}"></script>
+        <script src="{{ asset('js/Wallets/AuthWallet.js') }}"></script>
     </x-slot>
 </x-app-layout>

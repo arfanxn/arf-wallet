@@ -13,15 +13,27 @@
                     <p class="d-inline fw-bold fs-5">ARF-WALLET</p>
                 </div>
                 <div class="mt-3 d-flex justify-content-between">
-                    <h5>{{ ucwords(Auth::user()->name) }}</h5>
-                    <h5>{{ stringCensor($authWallet->address) }}</h5>
+                    <div class="">
+                        <h5 id="modalTextWalletOwnerName" class="censor-uncensor d-inline me-2"
+                            data-censored="{{ stringCensor(Auth::user()->name) }}"
+                            data-uncensored="{{ Auth::user()->name }}">
+                            {{ stringCensor(ucwords(Auth::user()->name)) }}
+                        </h5>
+                        <img id="btnCensorUncensor" src="{{ asset('icon/hidden.png') }}" alt="Hide">
+                    </div>
+                    <h5 class="censor-uncensor" data-censored="{{ stringCensor($authWallet->address) }}"
+                        data-uncensored="{{ $authWallet->address }}">
+                        {{ stringCensor($authWallet->address) }}</h5>
                 </div>
                 <div class="">
                     <a href="{{ route('wallet-topup.create') }}"
                         class="float-end badge bg-primary text-decoration-none text-white fs-6 mt-1">+ TOP UP</a>
                     <p class="m-0 fs-5">Saldo</p>
                     <small class="align-top d-inline">Rp</small>
-                    <p class="d-inline align-baseline">{{ toCurrency($authWallet->balance) }}</p>
+                    <p class="censor-uncensor d-inline align-baseline" id="modalTextWalletBalance"
+                        data-censored="{{ stringCensor(toCurrency($authWallet->balance), true) }}"
+                        data-uncensored="{{ toCurrency($authWallet->balance) }}">
+                        {{ stringCensor(toCurrency($authWallet->balance), true) }}</p>
 
                 </div>
             </div>

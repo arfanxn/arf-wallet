@@ -2,7 +2,10 @@
     <x-icon.wallet></x-icon.wallet>
     <div class="d-inline pe-2">
         <small class="align-top d-inline">Rp</small>
-        <p class="d-inline align-baseline">{{ toCurrency($authWallet->balance) }}</p>
+        <p id="navbarTextWalletBalance" class="censor-uncensor d-inline align-baseline"
+            data-censored="{{ stringCensor(toCurrency($authWallet->balance), true) }}"
+            data-uncensored="{{ toCurrency($authWallet->balance) }}">
+            {{ stringCensor(toCurrency($authWallet->balance), true) }}</p>
     </div>
     <img class="btnModal" data-modal-name="wallet-info" width="14px" height="14px"
         src="{{ asset('icon/caret-dropdown.png') }}" alt="">
