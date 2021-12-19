@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Transactions\TopupWalletBalanceController;
 use App\Http\Controllers\Auth\AccountSettingController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -57,6 +58,13 @@ Route::middleware("guest")->group(function () {
 });
 
 Route::middleware("auth")->group(function () {
+    Route::get("email/verification", [EmailVerificationController::class, "create"])->name("email-verification.create");
+    Route::post("email/verification", [EmailVerificationController::class, "verify"])->name("email-verification.verify");
+});
+
+Route::middleware("auth", "verified:email-verification.create")->group(function () {
+    Route::get("account/logout", [AccountSettingController::class, "logout"])->name("account.logout");
+
     Route::get('/', [HomeController::class, "index"])->name("home");
 
     Route::group(["prefix" => "transaction", "as" => "transaction."], function () {
