@@ -8,4 +8,9 @@ class ErrorMessageResponse
     {
         return  "Something went wrong, please try again.";
     }
+
+    public static function verificationCode()
+    {
+        return "Code Verification doesnt match!";
+    }
 }
