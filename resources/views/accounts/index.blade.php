@@ -72,7 +72,7 @@
             </div>
         </div>
         <div class="w-100 py-2 ps-1 pe-2 border-bottom border-secondary align-middle d-flex">
-            <a href="" class="text-decoration-none text-dark ms-1">Keluar</a>
+            <a href="{{ route('account.logout') }}" class="text-decoration-none text-dark ms-1">Keluar</a>
         </div>
 
     </main>
