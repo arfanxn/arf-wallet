@@ -28,7 +28,7 @@
             </p>
 
             <div class="d-flex justify-content-between">
-                <a href="{{ route('register.create') }}"
+                <a href="{{ route('login.show') }}"
                     class=" text-decoration-none  font-monospace cursor-pointer text-white fw-bold m-5">
                     < KEMBALI</a>
                         <a onclick="submitForm()"
