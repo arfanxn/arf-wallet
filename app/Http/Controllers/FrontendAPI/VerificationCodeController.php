@@ -4,6 +4,7 @@ namespace App\Http\Controllers\FrontendAPI;
 
 use App\Http\Controllers\Controller;
 use App\Models\VerificationCode;
+use App\Responses\ErrorMessageResponse;
 use App\Services\VerificationCodeService;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,7 @@ class VerificationCodeController extends Controller
         return $isCodeMatch ? response()->json([
             "status" => true, "message" => "Code Verification match!"
         ]) : response()->json([
-            "status" => false, "error_message" => "Code Verification doesnt match!"
+            "status" => false, "error_message" => ErrorMessageResponse::verificationCode()
         ]);
     }
 }
