@@ -74,7 +74,7 @@ class TransactionPaginator {
             .getElementById("transaction-pagination-wrapper");
         transactionPaginationWrapper.innerHTML = "";
 
-        if (pagination.length > 1) {
+        if (pagination.length > 0) {
             pagination.forEach(transactionData => {
                 transactionPaginationWrapper.innerHTML += `<a href="/transaction/detail/${transactionData.tx_hash}" data-transaction="${transactionData}"
                 class="transaction d-flex justify-content-between py-3 border-bottom border-secondary mx-3 text-decoration-none text-dark">
