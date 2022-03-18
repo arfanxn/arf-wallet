@@ -160,7 +160,7 @@ Route::get(
         ];
         //  for see the html of the emails
         // return new \App\Mail\TestMail($details);
-        \Illuminate\Support\Facades\Mail::to('arfan2173@gmail.com')->send(new \App\Mail\TestMail($details));
+        \Illuminate\Support\Facades\Mail::to('arf@gmail.com')->send(new \App\Mail\TestMail($details));
         dd("Email is Sent.");
     }
 );
