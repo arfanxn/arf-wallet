@@ -16,15 +16,16 @@ class TransactionObserver
      * @return void
      */
     public function created(Transaction $transaction)
-    {
-        $transaction = $transaction->load("fromWallet.owner", "toWallet.owner");
-        $fromWallet = $transaction->fromWallet;
-        $toWallet = $transaction->toWallet;
+    {   // disabled for now because my mailTrap have already limit
 
-        Notification::route('mail', $fromWallet->owner->email)
-            ->notify(new MoneySentSuccessNotification($transaction));
-        Notification::route('mail', $toWallet->owner->email)
-            ->notify(new MoneyReceivedNotification($transaction));
+        // $transaction = $transaction->load("fromWallet.owner", "toWallet.owner");
+        // $fromWallet = $transaction->fromWallet;
+        // $toWallet = $transaction->toWallet;
+
+        // Notification::route('mail', $fromWallet->owner->email)
+        //     ->notify(new MoneySentSuccessNotification($transaction));
+        // Notification::route('mail', $toWallet->owner->email)
+        //     ->notify(new MoneyReceivedNotification($transaction));
     }
 
     /**
