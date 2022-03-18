@@ -14,31 +14,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::create([
+        \App\Models\User::factory(1)->create([
             "name" => "Muhammad Arfan",
             "phone_number" => "089506089254",
-            "email" => "arfan2173@gmail.com",
+            "email" => "arf@gmail.com",
             "password" => bcrypt("111222"),
-        ]);
+        ])->each(function (\App\Models\User $user) {
+            \App\Models\Transaction::factory(rand(50, 100))->create([
+                "from_wallet_id" => $user->id,
+                "to_wallet_id" => rand(1, 300),
+            ]);
+        });
 
-        \App\Models\User::factory(300)->create();
+        \App\Models\User::factory(300)->create()->each(function (\App\Models\User $user) {
 
-        \App\Models\Transaction::factory(2000)->create();
-
-        // for ($i = 0; $i < 10000; $i++) {
-        //     try {
-        //         \App\Models\User::factory(100)->create();
-        //     } catch (\Illuminate\Database\QueryException $e) {
-        //         continue;
-        //     }
-        // }
-        // // for ($i = 0; $i < 100; $i++) {
-        // //     \App\Models\User::factory(100)->create();
-        // // }
-
-        // // for ($i = 0; $i < 1000; $i++) {
-        // //     \App\Models\Transaction::factory(10000)->create();
-        // // }
+            $toWalletID = rand(1, 300);
+            if ($toWalletID == $user->id) {
+                $toWalletID += 1;
+            }
+            \App\Models\Transaction::factory(rand(1, 100))->create([
+                "from_wallet_id" =>  $user->id,
+                "to_wallet_id" => $toWalletID,
+            ]);
+        });
 
         Wallet::where("user_id", "<=", 5)->update(["balance" => "18446744073709551615"]);
     }
