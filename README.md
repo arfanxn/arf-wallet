@@ -1,6 +1,6 @@
 # Arf Wallet (Laravel & Blade & Bootstrap)
 
-Arf Wallet is Dana Mobile Clone application build with Laravel 8, Mysql, and Bootstrap 5 . 
+Arf Wallet is inpired & cloned from Dana Mobile application build with Laravel 8, Mysql, and Bootstrap 5 . 
 
 ## Installation
 
